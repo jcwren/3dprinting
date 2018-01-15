@@ -1,4 +1,4 @@
 difference () {
-  cylinder (h=54, d1=77, d2=84.7, $fn=90);
-  cylinder (h=55, d=67, $fn=90);
+  cylinder (h=35, d1=79, d2=84.4, $fn=90);
+  cylinder (h=35, d=67.5, $fn=90);
 };
