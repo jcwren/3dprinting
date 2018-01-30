@@ -17,16 +17,19 @@ translate ([-24.5, -5, 0]) {
   difference () {
     
     // Floor
-    cube ([49, 25, 9]);
+    cube ([49, 25, 10]);
 
     // Main body of PSU cutout
-    translate ([5, 5, 5]) {
+    translate ([5, 5, 6]) {
       cube ([39, 20, 4]);
     }
     
     // Connector cutout
-    translate ([28.5, 0, 5]) {
+    translate ([28.5, 0, 6]) {
       cube ([13, 5, 4]);
+    }
+    translate ([28.5, 0, 5]) {
+      cube ([13, 2, 1]);
     }
     
     //  Screw hole & head recess

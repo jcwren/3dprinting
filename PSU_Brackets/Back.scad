@@ -17,23 +17,23 @@ translate ([-24.5, -5, 0]) {
   difference () {
     
     // Floor
-    cube ([49, 25, 9]);
+    cube ([49, 25, 10]);
 
     // Main body of PSU cutout
-    translate ([5, 5, 5]) {
+    translate ([5, 5, 6]) {
       cube ([39, 20, 4]);
     }
     
     // Tab cutout
-    translate ([16.5, 0, 5]) {
+    translate ([16.5, 0, 6]) {
       cube ([16, 8, 4]);
     }
 
     // Slots
-    translate ([16.5, 11, 2]) {
+    translate ([16.5, 11, 3]) {
       cube ([2, 10, 4]);
     }
-    translate ([30.5, 11, 2]) {
+    translate ([30.5, 11, 3]) {
       cube ([2, 10, 4]);
     }
     
