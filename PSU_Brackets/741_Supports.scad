@@ -24,11 +24,11 @@ translate ([0, 0, 0]) {
     }
     
     // Tie-wrap
-    translate ([10.5, 0, 0]) {
-      cube ([9, 27, 2.5]);
+    translate ([10.25, 0, 0]) {
+      cube ([9.5, 27, 2.75]);
     }
-    translate ([10.5, 24.5, 0]) {
-      cube ([9, 2.5, 30]);
+    translate ([10.25, 24.5, 0]) {
+      cube ([9.5, 2.75, 30]);
     }
     /*
     translate ([15, 24.5, 2.5]) {
