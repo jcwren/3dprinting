@@ -23,6 +23,9 @@ difference () {
     translate ([60, 60, 47]) {
       cylinder (h=3, d=103, $fn=sides);
     }
+    translate ([60, 60, 44]) {
+      cylinder (h=3, d1=100, d2=103, $fn=sides);
+    }
   }
   
   //
