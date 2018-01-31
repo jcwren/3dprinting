@@ -8,28 +8,26 @@ module screw (x, y)
   }
 }
 
-translate ([0, 0, 0]) {
+translate ([-16, 0, 0]) {
   difference () {
      // Floor
-    cube ([32, 27, 27]);
+    cube ([32, 47, 27]);
 
-    // Remove cube to create vertical
+    // Remove cubes to create vertical
     translate ([0, 0, 7]) {
+      cube ([32, 20, 27]);
+    }
+    translate ([0, 27, 7]) {
       cube ([32, 20, 27]);
     }
     
     // Tie-wrap
     translate ([7.5, 0, 0]) {
-      cube ([17, 27, 3]);
-    }
-    translate ([7.5, 24.5, 0]) {
-      cube ([17, 3, 30]);
+      cube ([17, 47, 3]);
     }
     
     //  Screw holes & head recesses
     screw (4.25, 10);
-    screw (27.75, 10);
+    screw (27.75, 37);
   } 
 }
-
-  
