@@ -11,17 +11,17 @@ rotate ([180, 0, 0])  {
   difference () {
     union () {
       translate ([0, 0, 0]) // main cube
-        cube ([3 + 13 + 3, 3 + 18.5 + 3, 3 + 13 + 3]);
+        cube ([3 + 13 + 3, 3 + 18.5 + 6.5, 3 + 13 + 3]);
 
-      translate ([0, 0, -15]) // screw tab
-        cube ([3 + 13 + 3, 3, 15]);
+      translate ([0, 0, -10]) // screw tab
+        cube ([3 + 13 + 3, 5, 10]);
     }
 
-    translate ([3, 3, -0.1]) // cutout
+    translate ([3, 6.5, -0.1]) // cutout
       cube ([13, 18.5, 3 + 13 + 3 + 0.2]);
 
-    translate ([(3 + 13 + 3) / 2, -0.1, -(15 / 2)]) // screw
+    translate ([(3 + 13 + 3) / 2, -0.1, -(10 / 2)]) // screw
       rotate ([270, 0, 0])
-        cylinder (d=hole_size, h=3.2, $fn = sides);
+        cylinder (d=hole_size, h=5.2, $fn = sides);
   }
 }
