@@ -7,6 +7,7 @@ holder_end=10;          // Thickness of bolt and nut walls
 holder_floor=5;         // Thickness of floor
 bolt_end_thickness=8.6; // Thickness of LR-308 bolt wall
 bolt_dia=16.66;         // Diameter of LR-10 bolt body measured just behind locking lugs
+bolt_face_dia=11.75;    // Diameter of face of bolt, less 0.2 for ABS expansion
 bolt_h_offset=5;        // Horizontal offset
 bolt_v_offset=17;       // Vertical offset
 ejector_pin_offset=5;   // Pin is 5mm back from the back of the lugs, and 5mm from the edge
@@ -15,10 +16,10 @@ waist_dia=9.5;          // Diameter at narrowest part of waist
 waist_offset=39.6;      // From back of lugs to edge of waist
 waist_support_wall=6.15;// Thickness of waist support on holder
 nut_end_thickness=10;   // Thickness of nut wall
-nut_dia=14.7;           // 1/4-20 nut diameter (measure across points, not flats!)
-nut_thickness=7.1;      // 1/4-20 nut thickness
+nut_dia=14.7;           // 3/8-18 nut diameter (measure across points, not flats!)
+nut_thickness=7.1;      // 3/8-18 nut thickness
 nut_h_offset=13;        // Horizontal offset to center with firing pin hole
-screw_dia=8.1;          // Outside diameter of 1/4-20 screw threads
+screw_dia=7.7;          // Outside diameter of 3/8-18 screw threads
 
 //
 // Nut diameter has 0.4mm added, nut thickness has 0.2mm added, and
@@ -27,12 +28,18 @@ screw_dia=8.1;          // Outside diameter of 1/4-20 screw threads
 // that annoying moire' pattern.
 //
 
+//
+// May need to tweak the inner diameter of the cap by changing the
+// "+ 0" below to "+ 0.1", "- 0.1", etc. Four different bolts all
+// required different size inner diameters to fit snuggly. 7.7mm
+// fit the 3/8" x 1" x 18 thumbscrew best.
+//
 module cap (x=0, y=0) {
   translate ([x, y, 0])
     difference () {
-      cylinder (d=11.75, h=10, $fn=sides);
+      cylinder (d=bolt_face_dia, h=10, $fn=sides);
       translate ([0, 0, 3])
-        cylinder (d=7.9, h=8, $fn=sides);
+        cylinder (d=screw_dia + 0, h=8, $fn=sides);
     }
 }
 
@@ -70,10 +77,10 @@ module holder (x=0, y=0) {
 
       translate ([nut_h_offset, (holder_length - holder_end) + nut_thickness - 0.1, bolt_v_offset])
         rotate ([90, 30, 0])
-          cylinder (d=nut_dia, h=nut_thickness, $fn=6);             // 1/4-20 nut
+          cylinder (d=nut_dia, h=nut_thickness, $fn=6);                 // 3/8-18 nut
       translate ([nut_h_offset, holder_length + 0.1, bolt_v_offset])
         rotate ([90, 0, 0])
-          cylinder (d=screw_dia, h=holder_end + 0.2, $fn=sides);    // 1/4-20 screw hole
+          cylinder (d=screw_dia + 0.4, h=holder_end + 0.2, $fn=sides);  // 3/8-18 screw hole plus some clearance
 
       translate ([(bolt_h_offset + bolt_dia) - ejector_pin_offset, bolt_end_thickness - ejector_pin_offset, -0.1])
         rotate ([0, 0, 90])
