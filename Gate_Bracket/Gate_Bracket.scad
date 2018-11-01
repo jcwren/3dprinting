@@ -1,26 +1,41 @@
 sides=360;
 
+module tiewrap (y=6, h=10, w=40) {
+  translate ([w / 2, y, h - 2]) {
+    difference () {
+      cylinder (d=w + 3.7, h=5);
+      cylinder (d=w + 2.0, h=5);
+    }
+  }
+}
+
+module index_pin () {
+  translate ([20, (33.75 / 2) + 5, 16]) {
+    rotate ([270, 0, 0]) {
+      cylinder (d=3, h=9, $fn=sides);
+    }
+  }
+}
+
 module gate (x=0, y=0) {
   translate ([x, y, 0]) {
-    //translate ([-1, (33.75 / 2) + 5, 21])
-    //  rotate ([0, 0, 0])
-    //    cube ([42, 1, 1]);
-    //translate ([20, (33.75 / 2) + 6, 21]) 
-    //  cube ([1, 22, 1]);
     difference () {
       cube ([40, 62.875, 20]);
+
+      tiewrap ();
+      index_pin ();
 
       translate ([20, 6, -1]) {
         cylinder (d=33.75, h=22, $fn=sides);
       }
-      
+
       //
       //  Bottom-side cutout
       //
       translate ([-1, 45, 9.5]) {
         cube ([42, 45, 15]);
       }
-      
+
       //
       //  Left-side angled cutout
       //
@@ -29,7 +44,7 @@ module gate (x=0, y=0) {
           cube ([40, 20, 22]);
         }
       }
-      
+
       //
       //  Right-side angled cutout
       //
@@ -69,7 +84,7 @@ union () {
       }
     }
   }
-  
+
   translate ([39, 0, 0]) {
     cube ([21, 0.01, 0.01]);
   }
