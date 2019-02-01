@@ -1,6 +1,6 @@
 sides=360;
 
-plug_dia      = 43.60;
+plug_dia      = 25.65;
 plug_height   = 5.50;
 ear_length    = 1.27;
 ear_width     = 2.30;
