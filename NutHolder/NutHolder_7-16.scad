@@ -4,18 +4,21 @@ function mm2in (v) = v / 25.4;
 function hexagonShortToLong (c) = 
   c*sin(90)/sin(60);
 
+//
+//  SAE 1/4" nut, lock washer, flat washer
+//
 socketHeight = in2mm (0.450);
 socketSize = in2mm (0.375);
 socketSides = 4;
 socketDimples = 1;
-nutHeight = in2mm (0.230);
-nutDia = in2mm (0.4375);
+nutHeight = in2mm (0.230);      // SAE 0.218750
+nutDia = in2mm (0.4375);        // SAE 0.437500
 nutSides = 6;
-lockHeight = in2mm (0.140);
-lockDia = in2mm (0.500);
+lockHeight = in2mm (0.140);     // SAE 0.062000 (x2)
+lockDia = in2mm (0.500);        // SAE 0.487000 (regular)
 lockSides = 360;
-washerHeight = in2mm (0.060);
-washerDia = in2mm (0.645);
+washerHeight = in2mm (0.070);   // SAE 0.006500
+washerDia = in2mm (0.645);      // SAE 0.625000
 washerSides = 360;
 wallThickness = in2mm (0.04);
 
