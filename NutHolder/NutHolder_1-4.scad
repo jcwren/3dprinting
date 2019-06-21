@@ -21,7 +21,7 @@ washerHeight = in2mm (0.065);   // SAE 0.006500
 washerDia = in2mm (0.645);      // SAE 0.625000
 washerSides = 360;
 nibHeight = in2mm (.01);
-nibWidth = in2mm (0.0500);
+nibLength = in2mm (0.05);
 slitWidth = in2mm (0.025);
 wallThickness = in2mm (0.04);
 
@@ -34,12 +34,13 @@ adapterHeight = socketHeight + nutHeight + lockHeight + washerHeight + nibHeight
 adapterDia = max (socketSize2, nutDia2, lockDia, washerDia) + wallThickness;
 adapterSides = 360;
 
-module nib (a, r, z)
-{
-  rotate ([0, 0, a])
+module nib (a, r, z) {
+  angle = 360 * (nibLength / (2 * PI * r));
+
+  rotate ([0, 0, a - (angle / 2)])
     intersection () {
       translate ([0, 0, z]) 
-        rotate_extrude (angle=10, convexity=10, $fn=360)
+        rotate_extrude (angle=angle, convexity=10, $fn=360)
           translate ([r - wallThickness / 2, 0, 0])
             circle (r=nibHeight, $fn=360);
       translate ([0, 0, z])
@@ -47,8 +48,7 @@ module nib (a, r, z)
     }
 }
 
-module adapter ()
-{
+module adapter () {
   difference () {
     translate ([0, 0, 0])
       cylinder (d=adapterDia, h=adapterHeight, $fn=adapterSides);
@@ -97,8 +97,8 @@ module adapter ()
       cube ([adapterDia + 0.02, slitWidth, washerHeight + nibHeight + 0.01]);
   }
   
-  for (i = [22.5 : 45 : 360])
-    nib (i, adapterDia / 2, socketHeight + nutHeight + lockHeight + washerHeight);
+  for (a = [22.5 : 45 : 360])
+    nib (a, adapterDia / 2, socketHeight + nutHeight + lockHeight + washerHeight);
 }
 
 adapter ();
