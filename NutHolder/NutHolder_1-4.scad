@@ -43,8 +43,8 @@ module nib (a, r, z) {
         rotate_extrude (angle=angle, convexity=10, $fn=360)
           translate ([r - wallThickness / 2, 0, 0])
             circle (r=nibHeight, $fn=360);
-      translate ([0, 0, z])
-        circle (r = r - (wallThickness / 2), $fn=360);
+      translate ([0, 0, z - nibHeight])
+        cylinder (r = r - (wallThickness / 2), h = nibHeight * 2, $fn=360);
     }
 }
 
