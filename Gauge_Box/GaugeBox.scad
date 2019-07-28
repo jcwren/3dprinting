@@ -6,41 +6,30 @@ height = in2mm (2.75);
 depth = in2mm (2.25);
 wall = in2mm (0.0625);
 radius = in2mm (0.250);
-gauge_dia = in2mm (2.10);
-
-box_outer = 
-  [[0, 0, 0], 
-   [width, 0, 0], 
-   [0, depth, 0,], 
-   [width, depth, 0]];
-box_inner = 
-  [[0, 0, 0], 
-   [width - (wall * 2), 0, 0], 
-   [0, depth - (wall * 2), 0,], 
-   [width - (wall * 2), depth - (wall * 2), 0]];
-
-module rounded_box (points, radius, height) {
-  hull () {
-    for (p = points) {
-      translate (p) 
-        cylinder (r=radius, h=height);
-    }
-  }
-}
+gauge_dia = in2mm (2.1);
+sides = 360;
 
 module box () {
   difference () {
-    translate ([0, 0, 0])
-      rounded_box (box_outer, radius, height);
-    translate ([wall, wall, wall])
-      rounded_box (box_inner, radius, height);
+    translate ([0, 0, 0]) {
+      minkowski () {
+        cube ([width, depth, height]);
+        cylinder (r=radius, h=1, $fn=sides);
+      }
+    }
+    translate ([0, 0, wall]) {
+      minkowski () {
+        cube ([width, depth, height]);
+        cylinder (r=(radius - wall), h=1, $fn=sides);
+      }
+    }
   }
 }
 
 module gauge_hole (x) {
   translate ([x, -(radius + 0.01), height / 2])
     rotate ([0, 90, 90])
-      cylinder (d=gauge_dia, h=radius * 2);
+      cylinder (d=gauge_dia, h=radius * 2, $fn=sides);
 }
 
 difference () {
