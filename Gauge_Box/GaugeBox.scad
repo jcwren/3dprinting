@@ -30,14 +30,14 @@ module box_lid () {
   difference () {
     translate ([0, 0, 0]) {
       minkowski () {
-        cube ([width, depth, wall * 3]);
+        cube ([width, depth, wall * 5]);
         cylinder (r=radius, h=0.01, $fn=sides);
       }
     }
 
     translate ([0, 0, 0]) {
       minkowski () {
-        cube ([width, depth, wall * 2]);
+        cube ([width, depth, wall * 4]);
         cylinder (r=(radius - (wall * 2)), h=0.01, $fn=sides);
       }
     }
@@ -63,17 +63,32 @@ module lid () {
     mirror ([0, 0, 1]) {
       difference () {
         box_lid ();
-        box_outline (wall * 2);
+        box_outline (wall * 4);
       }
     }
   }
 }
 
+box = true;
+lid = true;
+
 union () {
-  translate ([0, 0, 0])
-    box ();
-  translate ([0, depth + in2mm (0.75), 0])
-    lid ();
-  translate ([0, 0, 0])
-    cube ([0.01, width * 2, 0.01]);
+  if (box && !lid) {
+    translate ([0, 0, 0])
+      box ();
+  }
+
+  if (!box && lid) {
+    translate ([0, 0, 0])
+      lid ();
+  }
+
+  if (box && lid) {
+    translate ([0, 0, 0])
+      box ();
+    translate ([0, depth + in2mm (0.75), 0])
+      lid ();
+    translate ([0, 0, 0])
+      cube ([0.01, width * 2, 0.01]);
+  }
 }
