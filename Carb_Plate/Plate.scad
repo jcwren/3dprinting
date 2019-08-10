@@ -28,13 +28,13 @@ module rounded_box (size, r) {
   
   hull () {
     translate ([r, r, 0])
-      circle (r);
+      circle (d = r);
     translate ([r, h - r, 0])
-      circle (r);
+      circle (d = r);
     translate ([w - r, h - r, 0])
-      circle (r);
+      circle (d = r);
     translate ([w - r, r, 0])
-      circle (r);
+      circle (d = r);
   }
 }
 
@@ -110,14 +110,20 @@ module carb_base () {
 module cable_bracket () {
   translate ([stud_loc [STUD_UR][0], stud_loc [STUD_UR][1], 0]) {
     difference () {
-      translate ([-in2mm (0.5), -in2mm (0.5), 0]) {
+      translate ([-in2mm (0.5), -in2mm (0.900), 0]) {
         round2d (in2mm (0.125), in2mm (0.125)) {
           difference () {
-            square ([in2mm (2.5), in2mm (3.5)]);
+            square ([in2mm (3.0), in2mm (4.5)]);
               translate ([in2mm (1), in2mm (0), 0])
-            square ([in2mm (2.5), in2mm (2.5)]);
+            square ([in2mm (3.0), in2mm (3.5)]);
           }
         }
+      }
+      hull () {
+        translate ([-in2mm (frac (1, 2)), in2mm (frac (9, 16)), 0])
+          circle (d = in2mm (0.125));
+        translate ([-in2mm (frac (1, 2)), in2mm (frac (17, 16)), 0])
+          circle (d = in2mm (0.125));
       }
       translate ([0, 0, 0])
         circle (d = stud_dia);
@@ -132,6 +138,7 @@ module throttle_bracket () {
   }
 }
 
-linear_extrude (height = in2mm (frac (3, 32)), center = true, convexity = 10, twist = 0)
+//linear_extrude (height = in2mm (frac (3, 32)), center = true, convexity = 10, twist = 0)
+rotate(a=[180,0,0])
   throttle_bracket ();
 
