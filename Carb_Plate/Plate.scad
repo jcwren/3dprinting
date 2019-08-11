@@ -34,7 +34,7 @@ module ear (v, angle)
 }
 
 module ears () {
-  adjust = 5;
+  adjust = 6;
   
   ear ([0,            0],             45 - adjust);
   ear ([0,            stud_space_y], 135 + adjust);
@@ -63,7 +63,7 @@ module carb_base () {
     box_w = in2mm (5 + frac (1, 4));
     box_h = in2mm (2 + frac (5, 8));
     box_x_offset = -in2mm (frac (3, 64));
-    box_y_offset = in2mm (frac (18, 32));
+    box_y_offset = in2mm (frac (17, 32));
     
     cut_w = in2mm (4 + frac (5, 16));
     cut_h = in2mm (1 + frac (7, 8));
@@ -123,5 +123,5 @@ module throttle_bracket () {
   }
 }
 
-//linear_extrude (height = in2mm (frac (3, 64)), center = true, convexity = 10, twist = 0)
+linear_extrude (height = 0.6, center = true, convexity = 10, twist = 0)
   throttle_bracket ();
