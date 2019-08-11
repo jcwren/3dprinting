@@ -8,35 +8,7 @@ function frac (x, y) = (1 / y) * x;
 
 stud_dia = in2mm (frac (11, 32));
 stud_space_x = in2mm (5 + frac (5, 32));
-stud_space_y = in2mm (3.5);
-
-STUD_LL = 0;
-STUD_UL = 1;
-STUD_UR = 2;
-STUD_LR = 3;
-
-stud_loc = [
-  [-(stud_space_x / 2), -(stud_space_y / 2)], // Lower left
-  [-(stud_space_x / 2),  (stud_space_y / 2)], // Upper left
-  [ (stud_space_x / 2),  (stud_space_y / 2)], // Upper right
-  [ (stud_space_x / 2), -(stud_space_y / 2)]  // Lower right
-];
-
-module rounded_box (size, r) {
-  w = size [0];
-  h = size [1];
-  
-  hull () {
-    translate ([r, r, 0])
-      circle (d = r);
-    translate ([r, h - r, 0])
-      circle (d = r);
-    translate ([w - r, h - r, 0])
-      circle (d = r);
-    translate ([w - r, r, 0])
-      circle (d = r);
-  }
-}
+stud_space_y = in2mm (3 + frac (15, 32));
 
 module ear (v, angle)
 {
@@ -64,81 +36,92 @@ module ear (v, angle)
 module ears () {
   adjust = 5;
   
-  ear (stud_loc [STUD_LL],  45 - adjust);
-  ear (stud_loc [STUD_UL], 135 + adjust);
-  ear (stud_loc [STUD_UR], 225 - adjust);
-  ear (stud_loc [STUD_LR], 315 + adjust);
+  ear ([0,            0],             45 - adjust);
+  ear ([0,            stud_space_y], 135 + adjust);
+  ear ([stud_space_x, stud_space_y], 225 - adjust);
+  ear ([stud_space_x, 0],             315 + adjust);
 }
 
-module cutout (w, h, y_offset, radius) {  
+module cutout (w, h, radius) {  
   hull () {
-    translate ([-(w / 2), (-(h / 2)) + y_offset, 0])
+    translate ([0, 0, 0])
       circle (d = radius);
-    translate ([-(w / 2), (h / 2) + y_offset, 0])
+    translate ([0, h - radius, 0])
       circle (d = radius);
-    translate ([w / 2, (h / 2) + y_offset, 0])
+    translate ([w - radius, h - radius, 0])
       circle (d = radius);
-    translate ([w / 2, (-(h / 2)) + y_offset, 0])
+    translate ([w - radius, 0, 0])
       circle (d = radius);
   }
 }
 
-//
-//  cut_offset should be calculatable, but I can't figure out what
-//  it should be. For now, it's imperically derived.
-//
 module carb_base () {
   difference () {
-    top_offset = in2mm (frac (17, 32)); 
-    bot_offset = in2mm (frac (5, 16)); 
-    box_h = stud_space_y - (top_offset + bot_offset);
-    box_w = stud_space_x + in2mm (frac (1, 16) * 2);
-    cut_w = box_w - (in2mm (0.50) * 2);
-    cut_h = box_h - (in2mm (0.50) * 2);
-    cut_offset = -in2mm (0.1);
+    x = 0;
+    y = 0;
+    
+    box_w = in2mm (5 + frac (1, 4));
+    box_h = in2mm (2 + frac (5, 8));
+    box_x_offset = -in2mm (frac (3, 64));
+    box_y_offset = in2mm (frac (18, 32));
+    
+    cut_w = in2mm (4 + frac (5, 16));
+    cut_h = in2mm (1 + frac (7, 8));
+    cut_x_offset = in2mm (frac (9, 16));
+    cut_y_offset = in2mm (1 + frac (1, 32));
     cut_radius = in2mm (0.25);
     
     union () {
       ears ();
-      translate ([-(box_w / 2), -((stud_space_y / 2) - bot_offset), 0])
+      translate ([x + box_x_offset, y + box_y_offset, 0])
         square ([box_w, box_h]);
     }
-    cutout (cut_w, cut_h, cut_offset, cut_radius);
+    translate ([x + cut_x_offset, y + cut_y_offset, 0])
+      cutout (cut_w, cut_h, cut_radius);
   }
 }
 
 module cable_bracket () {
-  translate ([stud_loc [STUD_UR][0], stud_loc [STUD_UR][1], 0]) {
-    difference () {
-      translate ([-in2mm (0.5), -in2mm (0.900), 0]) {
-        round2d (in2mm (0.125), in2mm (0.125)) {
-          difference () {
-            square ([in2mm (3.0), in2mm (4.5)]);
-              translate ([in2mm (1), in2mm (0), 0])
-            square ([in2mm (3.0), in2mm (3.5)]);
-          }
+  difference () {
+    tp_w = in2mm (3.0);
+    tp_h = in2mm (4.5);
+    tp_x_offset = -in2mm (frac (1, 2));
+    tp_y_offset = in2mm (frac (15, 16));
+    
+    translate ([-in2mm (0.5), tp_y_offset - tp_h, 0]) {
+      round2d (in2mm (0.125), in2mm (0.125)) {
+        difference () {
+            translate ([0, 0, 0])
+          square ([tp_w, tp_h]);
+            translate ([in2mm (1), in2mm (1), 0])
+          square ([in2mm (3.0), in2mm (3.5)]);
         }
       }
+    }
+    //
+    //  Enable for accellerator pump cutout
+    //
+    if (1) {
       hull () {
-        translate ([-in2mm (frac (1, 2)), in2mm (frac (9, 16)), 0])
+        translate ([-in2mm (frac (1, 2)), -in2mm (frac (9, 16)), 0])
           circle (d = in2mm (0.125));
-        translate ([-in2mm (frac (1, 2)), in2mm (frac (17, 16)), 0])
+        translate ([-in2mm (frac (1, 2)), -in2mm (frac (17, 16)), 0])
           circle (d = in2mm (0.125));
       }
-      translate ([0, 0, 0])
-        circle (d = stud_dia);
     }
+    translate ([0, 0, 0])
+      circle (d = stud_dia);
   }
 }
 
 module throttle_bracket () {
   union () {
-    carb_base ();
-    cable_bracket ();
+    translate ([0, 0, 0])
+      carb_base ();
+    translate ([stud_space_x, 0, 0])
+      cable_bracket ();
   }
 }
 
-//linear_extrude (height = in2mm (frac (3, 32)), center = true, convexity = 10, twist = 0)
-rotate(a=[180,0,0])
+//linear_extrude (height = in2mm (frac (3, 64)), center = true, convexity = 10, twist = 0)
   throttle_bracket ();
-
