@@ -39,7 +39,7 @@ module carb_ears () {
   ear ([0,            0],             45 - adjust);
   ear ([0,            stud_space_y], 135 + adjust);
   ear ([stud_space_x, stud_space_y], 225 - adjust);
-  ear ([stud_space_x, 0],             315 + adjust);
+  ear ([stud_space_x, 0],            315 + adjust);
 }
 
 module carb_base_box () {
@@ -87,7 +87,7 @@ module carb_base () {
 }
 
 module cable_bracket_ell () {
-  tp_w = in2mm (3.0);
+  tp_w = in2mm (3.25);
   tp_h = in2mm (4.5);
   tp_x_offset = -in2mm (frac (1, 2));
   tp_y_offset = in2mm (frac (15, 16));
@@ -134,7 +134,7 @@ module cable_bracket () {
     difference () {
       cable_bracket_ell ();
       cable_bracket_accel_pump_cutout ();
-      cable_bracket_cable_mount ();
+      //cable_bracket_cable_mount ();
 
       //
       //  Redraw the lower right stud hole, got wiped out by the box
@@ -151,5 +151,5 @@ module throttle_bracket () {
   }
 }
 
-//linear_extrude (height = 0.6, center = true, convexity = 10, twist = 0)
+linear_extrude (height = in2mm (frac (1, 8)), center = true, convexity = 10, twist = 0)
   throttle_bracket ();
