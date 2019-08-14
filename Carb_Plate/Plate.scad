@@ -87,7 +87,7 @@ module carb_base () {
 }
 
 module cable_bracket_ell () {
-  tp_w = in2mm (3.25);
+  tp_w = in2mm (4.0);
   tp_h = in2mm (4.5);
   tp_x_offset = -in2mm (frac (1, 2));
   tp_y_offset = in2mm (frac (15, 16));
@@ -151,5 +151,21 @@ module throttle_bracket () {
   }
 }
 
+module outline () {
+  difference () {
+    translate ([0, 0, 0])
+      square ([in2mm (7.1), in2mm (12.1)]);
+    translate ([in2mm (0.05), in2mm (0.05), 0])
+      square ([in2mm (7.0), in2mm (12.0)]);
+   }
+}
+
+
 linear_extrude (height = in2mm (frac (1, 8)), center = true, convexity = 10, twist = 0)
-  throttle_bracket ();
+/*
+outline ();
+translate ([in2mm (0.45), in2mm (8), 0])
+  rotate ([0, 0, 330])
+*/
+
+throttle_bracket ();
