@@ -86,6 +86,12 @@ module carb_base () {
   }
 }
 
+module cable_bracket_reinforcement () {
+  polygon ([[in2mm (0.0), in2mm (1.0)], 
+            [in2mm (0.0), in2mm (4.45)],
+            [in2mm (-3.45), in2mm (4.45)]]);
+}
+
 module cable_bracket_ell () {
   tp_w = in2mm (4.0);
   tp_h = in2mm (4.5);
@@ -97,35 +103,11 @@ module cable_bracket_ell () {
       difference () {
         translate ([0, 0, 0])
           square ([tp_w, tp_h]);
-        translate ([in2mm (1), in2mm (1), 0])
+        translate ([in2mm (1.0), in2mm (1.0), 0])
           square ([in2mm (3.0), in2mm (3.5)]);
       }
     }
-  }
-}
-
- module cable_bracket_accel_pump_cutout () {
-  if (0) {
-    hull () {
-      translate ([-in2mm (frac (1, 2)), -in2mm (frac (9, 16)), 0])
-        circle (d = in2mm (0.125));
-      translate ([-in2mm (frac (1, 2)), -in2mm (frac (17, 16)), 0])
-        circle (d = in2mm (0.125));
-    }
-  }
-}
-
-module cable_bracket_cable_mount () {
-  slot_x = in2mm (1.25);
-  slot_y = -in2mm (2 + frac (15, 16));
-  slot_width = in2mm (0.125);
-  slot_len = in2mm (0.25);
-
-  hull () {
-    translate ([slot_x, slot_y, 0])
-      circle (d = slot_width);
-    translate ([slot_x, slot_y - slot_len, 0])
-      circle (d = slot_width);
+    cable_bracket_reinforcement ();
   }
 }
 
@@ -133,8 +115,6 @@ module cable_bracket () {
   translate ([stud_space_x, 0, 0]) {
     difference () {
       cable_bracket_ell ();
-      cable_bracket_accel_pump_cutout ();
-      //cable_bracket_cable_mount ();
 
       //
       //  Redraw the lower right stud hole, got wiped out by the box
@@ -161,7 +141,7 @@ module outline () {
 }
 
 
-linear_extrude (height = in2mm (frac (1, 8)), center = true, convexity = 10, twist = 0)
+// linear_extrude (height = in2mm (frac (1, 8)), center = true, convexity = 10, twist = 0)
 /*
 outline ();
 translate ([in2mm (0.45), in2mm (8), 0])
