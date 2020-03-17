@@ -1,5 +1,8 @@
 These are for mounting the PIDP8I front panel to the case.
 
+This is made for a Pi 3 Model B+. If used with a Pi Zero, it'll still work,
+there's just some wasted space.
+
 It's overkill, for sure.  You can use the wood blocks that came with the kit,
 assuming they're the right dimensions (mine weren't). I wanted it to be rigidly
 mounted. Screw the PCB to the mounts, then figure out where the holes should be
