@@ -19,3 +19,7 @@ case where the screw holes should roughly be.
 
 Printed with 10% gyroid infill in PETG. Screw holes are sized for M3 sheet
 metal or machine screws.
+
+The LED bars should be flipped 180 degrees in the slicer so that the top of
+the bar is on the bed. This will give a smoother finish to it, and it looks
+better under the acrylic.
