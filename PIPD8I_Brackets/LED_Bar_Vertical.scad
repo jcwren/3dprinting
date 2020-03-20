@@ -41,4 +41,10 @@ module bar (is3LEDs) {
   }
 }
 
-bar (leds == 3);
+//
+//  Print coned side down because otherwise the cutouts need supports, plus we
+//  want the pretty side against the bed.
+//
+rotate (a = [180, 0, 0])
+  translate ([0, -bar_width, -bar_height])
+    bar (leds == 3);
