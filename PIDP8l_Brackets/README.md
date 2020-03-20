@@ -50,3 +50,5 @@ under the switches. Use a piece of tape from underneath to rejoin the slit.
 Printed with 10% gyroid infill in PETG. Screw holes are sized for M3 sheet
 metal or machine screws. I used black PETG, which is less visible. A dark
 gray may be more period correct.
+
+URL to the build instructions for the version I have: https://obsolescence.wixsite.com/obsolescence/copy-of-2016-pidp-8-building-instru
