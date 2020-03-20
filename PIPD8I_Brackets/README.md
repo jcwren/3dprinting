@@ -1,4 +1,4 @@
-#PIDP8I standoffs and LED masking bars
+# PIDP8I standoffs and LED masking bars
 
 The standoffs are for mounting the PIDP8I front panel to the case.
 
