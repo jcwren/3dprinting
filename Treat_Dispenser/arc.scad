@@ -7,7 +7,7 @@ module sector (radius, angles, fn = 24) {
   step = -360 / fn;
 
   points = concat ([[0, 0]],
-    [for (a = [angles [0] : step : angles [1] - 360]) 
+    [for (a = [angles [0] : step : angles [1] - 360])
         [r * cos (a), r * sin (a)]
     ],
     [[r * cos (angles [1]), r * sin (angles [1])]]
@@ -24,7 +24,7 @@ module arc (radius, angles, width = 1, fn = 24) {
     sector (radius + width, angles, fn);
     sector (radius, angles, fn);
   }
-} 
+}
 
 module line (point1, point2, width = 1, cap_round = true, fn = 24) {
   angle = 90 - atan ((point2 [1] - point1 [1]) / (point2 [0] - point1 [0]));
@@ -35,14 +35,14 @@ module line (point1, point2, width = 1, cap_round = true, fn = 24) {
   offset2 = [offset_x, -offset_y];
 
   if (cap_round) {
-    translate (point1) 
+    translate (point1)
       circle(d = width, $fn = fn);
-    translate (point2) 
+    translate (point2)
       circle(d = width, $fn = fn);
   }
 
   polygon (points = [
-    point1 + offset1, point2 + offset1,  
+    point1 + offset1, point2 + offset1,
     point2 + offset2, point1 + offset2
   ]);
 }
@@ -64,6 +64,6 @@ if (0) {
   width = 2;
   fn = 360;
 
-  linear_extrude (1) 
+  linear_extrude (1)
     arc (radius, angles, width, fn);
 }

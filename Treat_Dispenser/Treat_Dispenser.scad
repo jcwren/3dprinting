@@ -19,10 +19,10 @@ motor_shaft_hgt =  22.5;      // Total height of motor shaft stem
 motor_shaft_len =  20.0;      // Length of shaft on motor (from datasheet)
 
 wheel_rad            = wheel_dia / 2;
-wheel_z_bot          = motor_shaft_len - (motor_shaft_hgt - ((grub_dia / 2) + 4)); 
+wheel_z_bot          = motor_shaft_len - (motor_shaft_hgt - ((grub_dia / 2) + 4));
 wheel_z_top          = wheel_z_bot + wheel_hgt;
 cup_inner_dia        = wheel_dia + cup_wall;
-cup_outer_dia        = cup_inner_dia + (cup_wall * 1); 
+cup_outer_dia        = cup_inner_dia + (cup_wall * 1);
 cup_inner_rad        = cup_inner_dia / 2;
 cup_outer_rad        = cup_outer_dia / 2;
 scraper_inner_dia    = cup_inner_dia - (cup_wall * 2);
