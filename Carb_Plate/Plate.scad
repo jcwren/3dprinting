@@ -10,7 +10,7 @@ stud_dia = in2mm (frac (11, 32));
 stud_space_x = in2mm (5 + frac (5, 32));
 stud_space_y = in2mm (3 + frac (15, 32));
 
-module ear (v, angle)
+module ear (onlyHoles, v, angle)
 {
   x = v [0];
   y = v [1];
@@ -22,31 +22,33 @@ module ear (v, angle)
 
   difference ()
   {
-    hull () {
-      translate ([x, y, 0])
-        circle (d = d1);
-      translate ([nx, ny, 0])
-        circle (d = d2);
+    if (!onlyHoles) {
+      hull () {
+        translate ([x, y, 0])
+          circle (d = d1);
+        translate ([nx, ny, 0])
+          circle (d = d2);
+      }
     }
     translate ([x, y, 0])
       circle (d = stud_dia);
   }
 }
 
-module carb_ears () {
+module carb_ears (onlyHoles = 0) {
   adjust = 6;
 
-  ear ([0,            0],             45 - adjust);
-  ear ([0,            stud_space_y], 135 + adjust);
-  ear ([stud_space_x, stud_space_y], 225 - adjust);
-  ear ([stud_space_x, 0],            315 + adjust);
+  ear (onlyHoles, [0,            0],             45 - adjust);
+  ear (onlyHoles, [0,            stud_space_y], 135 + adjust);
+  ear (onlyHoles, [stud_space_x, stud_space_y], 225 - adjust);
+  ear (onlyHoles, [stud_space_x, 0],            315 + adjust);
 }
 
 module carb_base_box () {
   box_w = in2mm (5 + frac (1, 4));
-  box_h = in2mm (2 + frac (5, 8));
+  box_h = in2mm (3 + frac (3, 16));
   box_x_offset = -in2mm (frac (3, 64));
-  box_y_offset = in2mm (frac (17, 32));
+  box_y_offset = in2mm (frac (9, 32));
 
   translate ([box_x_offset, box_y_offset, 0])
     square ([box_w, box_h]);
@@ -83,6 +85,7 @@ module carb_base () {
       carb_base_box ();
     }
     carb_base_cutout ();
+    carb_ears (1);
   }
 }
 
@@ -93,7 +96,7 @@ module cable_bracket_reinforcement () {
 }
 
 module cable_bracket_ell () {
-  tp_w = in2mm (4.0);
+  tp_w = in2mm (3.5);
   tp_h = in2mm (4.5);
   tp_x_offset = -in2mm (frac (1, 2));
   tp_y_offset = in2mm (frac (15, 16));
@@ -141,7 +144,7 @@ module outline () {
 }
 
 
-// linear_extrude (height = in2mm (frac (1, 8)), center = true, convexity = 10, twist = 0)
+linear_extrude (height = in2mm (frac (1, 8)), center = true, convexity = 10, twist = 0)
 /*
 outline ();
 translate ([in2mm (0.45), in2mm (8), 0])
