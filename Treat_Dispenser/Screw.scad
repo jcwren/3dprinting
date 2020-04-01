@@ -21,7 +21,7 @@ difference () {
           rotate ([90, 0, 0])
             cube (size = [screw_od / 2, screw_wall_thickness, 1], center = false);
     }
-    
+
     //
     //  Center shaft
     //
@@ -34,7 +34,7 @@ difference () {
   //
   translate ([0, 0, -0.01])
     cylinder (h = motor_shaft_len + 0.01, d = screw_shaft_dia, $fn = sides);
-  
+
   //
   //  Flush cut both ends
   //
