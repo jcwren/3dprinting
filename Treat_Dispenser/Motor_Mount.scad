@@ -1,6 +1,7 @@
 include <Configuration.scad>;
 use <Auger.scad>;
 use <motor_hub.scad>;
+include <pvc_s40.scad>;
 include <BOSL/constants.scad>
 use <BOSL/shapes.scad>
 
@@ -49,17 +50,17 @@ module Nema17 (motor_height = 40) {
   }
 }
 
-module myAuger () {
-  Auger_twist                 = 360 * 5; // The total amount of twist, in degrees
-  Auger_diameter              = 40.5;    // The final diameter of the auger
-  Auger_num_flights           = 1;       // The number of "flights" [1:5]
-  Auger_flight_length         = 100;     // The height, from top to bottom of the "shaft" [10:200]
-  Auger_shaft_radius          = 5;       // The radius of the auger's "shaft" [1:25]
-  Auger_flight_thickness      = 1;       // The thickness of the "flight" (in the direction of height) [0.2:Thin, 1:Medium, 10:Thick]
-  Auger_handedness            = "right"; // The twist direction ["right":Right, "left":Left]
-  Auger_perimeter_thickness   = 0.0;     // The thickness of perimeter support material [0:None, 0.8:Thin, 2:Thick]
-  Printer_overhang_capability = 20;      // The overhang angle your printer is capable of [0:40]
-  Motor_shaft_len             = 20.0;    // The length of the shaft on the motor
+module myAuger (auger_len = 100) {
+  Auger_twist                 = 360 * 5;    // The total amount of twist, in degrees
+  Auger_diameter              = 40.5;       // The final diameter of the auger
+  Auger_num_flights           = 1;          // The number of "flights" [1:5]
+  Auger_flight_length         = auger_len;  // The height, from top to bottom of the "shaft" [10:200]
+  Auger_shaft_radius          = 5;          // The radius of the auger's "shaft" [1:25]
+  Auger_flight_thickness      = 1;          // The thickness of the "flight" (in the direction of height) [0.2:Thin, 1:Medium, 10:Thick]
+  Auger_handedness            = "right";    // The twist direction ["right":Right, "left":Left]
+  Auger_perimeter_thickness   = 0.0;        // The thickness of perimeter support material [0:None, 0.8:Thin, 2:Thick]
+  Printer_overhang_capability = 20;         // The overhang angle your printer is capable of [0:40]
+  Motor_shaft_len             = 20.0;       // The length of the shaft on the motor
 
   //
   //  Calculate variables
@@ -180,7 +181,7 @@ module pvc_pipe (od = 1.900, id = 1.590, len = 100) {
   }
 }
 
-module hopper (od = 1.900, id = 1.590, len = 100, tee_offset = 40, tee_height = 60) {
+module hopper (od = 1.900, id = 1.590, len = 100, tee_od = 1.900, tee_id = 1.590, tee_offset = 40, tee_height = 60) {
   difference () {
     pvc_pipe (od = od, id = id, len = len);
     rotate ([0, 90, 0])
@@ -190,34 +191,45 @@ module hopper (od = 1.900, id = 1.590, len = 100, tee_offset = 40, tee_height = 
 
   rotate ([0, 90, 0])
     translate ([-tee_offset, 0, id / 2])
-      pvc_pipe (od = od, id = id, len = tee_height);
+      pvc_pipe (od = tee_od, id = tee_id, len = tee_height);
 }
 
 module chute (od = 2.210, id = 1.900, chute_ring_ = 1.00) {
   od_mm = od * 25.4;
   id_mm = id * 25.4;
-  chute_ring__mm = chute_ring_ * 25.4;
+  chute_ring_mm = chute_ring_ * 25.4;
   wall = 2.00;
+  pipe_rad = od_mm / 2;
 
   difference () {
     union () {
-      cylinder (d = od_mm, h = chute_ring__mm, $fn = sides);
+      cylinder (d = od_mm, h = chute_ring_mm, $fn = sides);
 
-      translate ([-od_mm / 2, -od_mm / 2, chute_ring__mm - wall])
+      translate ([-od_mm / 2, -od_mm / 2, chute_ring_mm - wall])
         cube ([od_mm, od_mm / 2, wall]);
     }
 
     translate ([0, 0, -render_fix])
-      cylinder (d = id_mm, h = chute_ring__mm + wall + (render_fix * 2), $fn = sides);
+      cylinder (d = id_mm, h = chute_ring_mm + wall + (render_fix * 2), $fn = sides);
   }
 
+  chute_len   = 60.0;  // Length of chute, in mm (actual length, not Z)
+  chute_drop  = 40.0;  // How far end of chute is below center of ring
+  chute_width = 25.0;  // Width of chute exit point
+  chute_lip   = 12.0;  // Height of lip at chute exit point
+  chute_wall  =  2.0;  // Thickness of chute wall
+
+  chute_exit = chute_width / 2;
+
   points = [
-    [(od_mm / 2) - 0,                0, chute_ring__mm - 0],
-    [(od_mm / 2) - 2,                0, chute_ring__mm - 0],
-    [(od_mm / 2) - 0, -(od_mm / 2) + 2, chute_ring__mm - 0],
-    [(od_mm / 2) - 2, -(od_mm / 2) + 2, chute_ring__mm - 0],
-    [12.5,                         -60,                 55],
-    [10.5,                         -60,                 55],
+    [pipe_rad - 0,                                    0, chute_ring_mm],
+    [pipe_rad - chute_wall,                           0, chute_ring_mm],
+    [pipe_rad - 0,               -pipe_rad + chute_wall, chute_ring_mm],
+    [pipe_rad - chute_wall,      -pipe_rad + chute_wall, chute_ring_mm],
+    [chute_exit,              -(chute_drop - chute_lip),     chute_len],
+    [chute_exit - chute_wall, -(chute_drop - chute_lip),     chute_len],
+    [chute_exit,                            -chute_drop,     chute_len],
+    [chute_exit - chute_wall,               -chute_drop,     chute_len],
   ];
 
   for (i = [-1 : 2 : 1]) {
@@ -230,14 +242,14 @@ module chute (od = 2.210, id = 1.900, chute_ring_ = 1.00) {
   }
 
   polypoints = [
-    [ (od_mm / 2) - 0, -(od_mm / 2) + 2, chute_ring__mm - 0],
-    [ 12.5,                         -60,                 55],
-    [-12.5,                         -60,                 55],
-    [-(od_mm / 2) - 0, -(od_mm / 2) + 2, chute_ring__mm - 0],
-    [ (od_mm / 2) - 0, -(od_mm / 2) + 0, chute_ring__mm - 0],
-    [ 12.5,                         -62,                 55],
-    [-12.5,                         -62,                 55],
-    [-(od_mm / 2) - 0, -(od_mm / 2) + 0, chute_ring__mm - 0],
+    [ pipe_rad,     -(pipe_rad - chute_wall), chute_ring_mm],
+    [ chute_exit,          -(chute_drop + 0),     chute_len],
+    [-chute_exit,          -(chute_drop + 0),     chute_len],
+    [-pipe_rad,     -(pipe_rad - chute_wall), chute_ring_mm],
+    [ pipe_rad,              -(pipe_rad - 0), chute_ring_mm],
+    [ chute_exit, -(chute_drop + chute_wall),     chute_len],
+    [-chute_exit, -(chute_drop + chute_wall),     chute_len],
+    [-pipe_rad,              -(pipe_rad - 0), chute_ring_mm],
   ];
 
   polyfaces = [
@@ -255,13 +267,15 @@ module chute (od = 2.210, id = 1.900, chute_ring_ = 1.00) {
 //
 //  Lay some pipe :)
 //
+total_len = 120;
+
 %Nema17 (motor_height);
 
 translate ([0, 0, plate_thickness]) {
-  %myAuger ();
-  %hopper ();
+  %myAuger (auger_len = total_len);
+  %hopper (len = total_len, tee_od = PVC_S40 [PVC_S40_1_250][PVC_S40_OD], tee_id = PVC_S40 [PVC_S40_1_250][PVC_S40_ID]);
 
-  translate ([0, 0, 100 - i_to_mm (chute_ring_len)])
+  %translate ([0, 0, total_len - i_to_mm (chute_ring_len)])
     rotate ([0, 0, 270])
       chute ();
 }
