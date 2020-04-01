@@ -15,9 +15,7 @@ ring_wall         =   2.0;    // Thickness of ring wall
 mtg_screw_offset  =  35.0;    // Distance from center to mounting hole (FIXME!)
 pipe_od           =   1.900;  // Outside diameter of 1.5" schedule 40 PVC pipe (inches!)
 pipe_id           =   1.590;  // Inside diameter of 1.5" schedule 40 PVC pipe (inches!)
-end_cap_od        =   2.210;  // Outside diameter of 1.5" schedule 40 PVC end-cap
-end_cap_id        =   1.900;  // Inside diameter of 1.5" schedule 40 PVC end-cap
-end_cap_len       =   1.000;    // Assume it's 1" from top to bottom
+chute_ring_len    =   1.000;  // Length of chute mounting ring
 
 sides    = $preview ? 100 : 360;
 plate_xy = (plate_margin * 2) + motor_housing;
@@ -31,20 +29,20 @@ module Nema17 (motor_height = 40) {
         translate ([0, 0, motor_height / 2]) {
           intersection () {
             cube ([42.3, 42.3, motor_height], center = true);
-            rotate ([0, 0, 45]) 
-              translate ([0, 0, -1]) 
+            rotate ([0, 0, 45])
+              translate ([0, 0, -1])
                 cube ([74.3 * sin (45), 73.3 * sin (45), motor_height + 2], center = true);
           }
         }
-        translate ([0, 0, motor_height]) 
+        translate ([0, 0, motor_height])
           cylinder (h = 2, r = 11, $fn = 24);
-        translate ([0, 0, motor_height  +2]) 
+        translate ([0, 0, motor_height  +2])
           cylinder(h = 20, r = 2.5, $fn = 24);
       }
 
       for (i = [0 : 3]) {
         rotate ([0, 0, 90  *i])
-          translate ([15.5, 15.5, motor_height  -4.5]) 
+          translate ([15.5, 15.5, motor_height  -4.5])
             cylinder (h = 5, r = 1.5, $fn = 24);
       }
     }
@@ -123,7 +121,7 @@ module motor_mount () {
             circle (r = 2, $fn = sides);
         }
       }
-      
+
       translate ([0, 0, plate_thickness - 0.01]) {
         difference () {
           cylinder (d = ring_id + (ring_wall * 2), h = ring_hgt, $fn = sides);
@@ -131,13 +129,13 @@ module motor_mount () {
         }
       }
     }
-    
+
     //
     //  Shaft hole
     //
     translate ([0, 0, -render_fix])
       cylinder (d = shaft_base_dia, h = shaft_base_hgt + (render_fix * 2), $fn = sides);
-    
+
     //
     //  Screw holes for motor
     //
@@ -148,7 +146,7 @@ module motor_mount () {
       translate ([x, y, -render_fix])
         cylinder (d = shaft_screw_dia, h = plate_thickness + (render_fix * 2), $fn = sides);
     }
-    
+
     //
     //  Screw holes for mounting plate
     //
@@ -159,7 +157,7 @@ module motor_mount () {
       translate ([x, y, -render_fix])
         cylinder (d = shaft_screw_dia, h = plate_thickness + (render_fix * 2), $fn = sides);
     }
-    
+
     //
     //  Screw holes for pipe
     //
@@ -195,99 +193,77 @@ module hopper (od = 1.900, id = 1.590, len = 100, tee_offset = 40, tee_height = 
       pvc_pipe (od = od, id = id, len = tee_height);
 }
 
-module end_cap (od = 2.210, id = 1.900, cap_len = 1.000) {
+module chute (od = 2.210, id = 1.900, chute_ring_ = 1.00) {
   od_mm = od * 25.4;
   id_mm = id * 25.4;
-  cap_end_wall_mm = (od_mm - id_mm);
-  cap_len_mm = cap_len * 25.4;
-  cap_inner_len_mm = cap_len_mm - cap_end_wall_mm;
-  
-  difference () {
-    cylinder (d = od_mm, h = cap_len_mm, $fn = sides);
-    translate ([0, 0, -render_fix])
-      cylinder (d = id_mm, h = cap_len_mm + (render_fix * 2), $fn = sides);
-  }
-  
-  translate ([0, 0, cap_inner_len_mm + (cap_end_wall_mm * .75) + render_fix])
-    rotate ([90, 0, 0])
-      teardrop (r = id_mm / 2, h = cap_end_wall_mm / 2, ang = 25.4, cap_h = 10, $fn = sides);
-}
-
-module chute (od = 2.210, id = 1.900) {
-  od_mm = od * 25.4;
-  id_mm = id * 25.4;
-  cap_len_mm = 20.0;
+  chute_ring__mm = chute_ring_ * 25.4;
   wall = 2.00;
-  
+
   difference () {
     union () {
-      cylinder (d = od_mm, h = cap_len_mm, $fn = sides);
-      
-      translate ([-od_mm / 2, -od_mm / 2, cap_len_mm - wall])
+      cylinder (d = od_mm, h = chute_ring__mm, $fn = sides);
+
+      translate ([-od_mm / 2, -od_mm / 2, chute_ring__mm - wall])
         cube ([od_mm, od_mm / 2, wall]);
-      
-      translate ([0, -(od_mm / 2) + 1, cap_len_mm - 1.25]) 
-       rotate ([45, 0, 0]) 
-         prismoid (size1 = [od_mm, wall], size2 = [25, wall], h = 50, center = false);
     }
-    
-    translate ([0, 0, render_fix])
-      cylinder (d = id_mm, h = cap_len_mm + wall + (render_fix * 2), $fn = sides);
+
+    translate ([0, 0, -render_fix])
+      cylinder (d = id_mm, h = chute_ring__mm + wall + (render_fix * 2), $fn = sides);
   }
- 
+
   points = [
-    [-(od_mm / 2) + 0,            0, cap_len_mm - 0],           
-    [-(od_mm / 2) + 2,            0, cap_len_mm - 0],
-    [-(od_mm / 2) + 0, -(od_mm / 2), cap_len_mm - 0],  
-    [-(od_mm / 2) + 2, -(od_mm / 2), cap_len_mm - 0],
-    [-12.4,                     -62,             55],
-    [-10.4,                     -62,             55]
+    [(od_mm / 2) - 0,                0, chute_ring__mm - 0],
+    [(od_mm / 2) - 2,                0, chute_ring__mm - 0],
+    [(od_mm / 2) - 0, -(od_mm / 2) + 2, chute_ring__mm - 0],
+    [(od_mm / 2) - 2, -(od_mm / 2) + 2, chute_ring__mm - 0],
+    [12.5,                         -60,                 55],
+    [10.5,                         -60,                 55],
   ];
-  
-  hull () {
-    for (i = [0 : len (points) - 1]) {
-      translate (points [i])
+
+  for (i = [-1 : 2 : 1]) {
+    hull () {
+      for (j = [0 : len (points) - 1]) {
+        translate ([points [j].x * i, points [j].y, points [j].z])
           sphere (d = .001);
+      }
     }
   }
 
-  points2 = [
-    [(od_mm / 2) - 0,            0, cap_len_mm - 0],           
-    [(od_mm / 2) - 2,            0, cap_len_mm - 0],
-    [(od_mm / 2) - 0, -(od_mm / 2), cap_len_mm - 0],  
-    [(od_mm / 2) - 2, -(od_mm / 2), cap_len_mm - 0],
-    [12.4,                     -62,             55],
-    [10.4,                     -62,             55],
-
+  polypoints = [
+    [ (od_mm / 2) - 0, -(od_mm / 2) + 2, chute_ring__mm - 0],
+    [ 12.5,                         -60,                 55],
+    [-12.5,                         -60,                 55],
+    [-(od_mm / 2) - 0, -(od_mm / 2) + 2, chute_ring__mm - 0],
+    [ (od_mm / 2) - 0, -(od_mm / 2) + 0, chute_ring__mm - 0],
+    [ 12.5,                         -62,                 55],
+    [-12.5,                         -62,                 55],
+    [-(od_mm / 2) - 0, -(od_mm / 2) + 0, chute_ring__mm - 0],
   ];
-  
-  hull () {
-    for (i = [0 : len (points2) - 1]) {
-      translate (points2 [i])
-          sphere (d = .001);
-    }
-  }
-  
-  *translate ([0, -(od_mm / 2) + 1, cap_len_mm - 1.25]) 
-    rotate ([45, 0, 0]) 
-      prismoid (size1 = [od_mm, wall], size2 = [25, wall], h = 50, center = false);
+
+  polyfaces = [
+    [0,1,2,3],  // bottom
+    [4,5,1,0],  // front
+    [7,6,5,4],  // top
+    [5,6,2,1],  // right
+    [6,7,3,2],  // back
+    [7,4,0,3],  // left
+  ];
+
+  polyhedron (points = polypoints, faces = polyfaces, convexity = 10);
 }
 
 //
 //  Lay some pipe :)
 //
-*Nema17 (motor_height);
+%Nema17 (motor_height);
 
 translate ([0, 0, plate_thickness]) {
-  *myAuger ();
-  *hopper ();
+  %myAuger ();
+  %hopper ();
 
-  translate ([0, 0, (100 - plate_thickness) - (((end_cap_len - (end_cap_od - end_cap_id))) * 25.4)])
+  translate ([0, 0, 100 - i_to_mm (chute_ring_len)])
     rotate ([0, 0, 270])
-    {
-      *end_cap ();
       chute ();
-    }
 }
-  
-*motor_mount ();
+
+%motor_mount ();
