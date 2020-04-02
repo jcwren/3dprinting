@@ -5,24 +5,15 @@ include <pvc_s40.scad>;
 include <BOSL/constants.scad>
 use <BOSL/shapes.scad>
 
-motor_housing     =  42.3;    // Size of motor housing
-motor_height      =  40.0;    // Height of motor
-plate_margin      =  10.0;    // How far to extend plate past motor housing
-plate_thickness   =   2.0;    // Thickless for mounting plate
-corner_radius     =   2;      // Radius on corners of plate
-ring_id           =  48.46;   // Nominal OD of 1.5" (48.26mm) schedule 40 PVC + fudge factor
-ring_hgt          =  12.5;    // Height of ring pipe fits into
-ring_wall         =   2.0;    // Thickness of ring wall
-mtg_screw_offset  =  35.0;    // Distance from center to mounting hole (FIXME!)
-pipe_od           =   1.900;  // Outside diameter of 1.5" schedule 40 PVC pipe (inches!)
-pipe_id           =   1.590;  // Inside diameter of 1.5" schedule 40 PVC pipe (inches!)
-chute_ring_len    =   1.000;  // Length of chute mounting ring
+//
+//  Limit the value of $fn in preview mode
+//
+sides = $preview ? 100 : 360;
 
-sides    = $preview ? 100 : 360;
-plate_xy = (plate_margin * 2) + motor_housing;
-
-function i_to_mm (i = 1) = i * 25.4;
-
+//
+//  Standard NEMA-17 stepper motor. The body width and breadth
+//  is fixed, but the length can vary. 
+//
 module Nema17 (motor_height = 40) {
   translate ([0, 0, -motor_height]) {
     difference () {
@@ -50,9 +41,12 @@ module Nema17 (motor_height = 40) {
   }
 }
 
-module myAuger (auger_len = 100) {
+//
+//  Creates an auger, and adds the motor shaft hub
+//
+module auger_with_hub (auger_len = 120) {
   Auger_twist                 = 360 * 5;    // The total amount of twist, in degrees
-  Auger_diameter              = 40.5;       // The final diameter of the auger
+  Auger_diameter              = 40.0;       // The final diameter of the auger
   Auger_num_flights           = 1;          // The number of "flights" [1:5]
   Auger_flight_length         = auger_len;  // The height, from top to bottom of the "shaft" [10:200]
   Auger_shaft_radius          = 5;          // The radius of the auger's "shaft" [1:25]
@@ -107,26 +101,33 @@ module myAuger (auger_len = 100) {
       motor_hub (Auger_shaft_radius * 2, Motor_shaft_len);
 }
 
-module motor_mount () {
+//
+//  Mounting plate for NEMA-17 stepper motor and a ring to
+//  accomodate mounting a pipe. The defaults are for PVC
+//  schedule 40 1-1/2".
+//
+module motor_mount (plate_xy = 60.00, plate_thickness = 2.0, plate_radius = 2.00, pipe_dia = 48.26, pipe_hgt = 12.70, pipe_wall = 2.00) {
   difference () {
     union () {
       linear_extrude (plate_thickness) {
         hull () {
-          translate ([-(plate_xy / 2) + 2, (-plate_xy / 2) + 2, 0])
-            circle (r = 2, $fn = sides);
-          translate ([-(plate_xy / 2) + 2, (plate_xy / 2) - 2, 0])
-            circle (r = 2, $fn = sides);
-          translate ([(plate_xy / 2) - 2, (-plate_xy / 2) + 2, 0])
-            circle (r = 2, $fn = sides);
-          translate ([(plate_xy / 2) - 2, (plate_xy / 2) - 2, 0])
-            circle (r = 2, $fn = sides);
+          plate_xy2 = plate_xy / 2;
+
+          translate ([-(plate_xy2 - plate_radius), -(plate_xy2 - plate_radius), 0])
+            circle (r = plate_radius, $fn = sides);
+          translate ([-(plate_xy2 - plate_radius), plate_xy2 - plate_radius, 0])
+            circle (r = plate_radius, $fn = sides);
+          translate ([plate_xy2 - plate_radius, -(plate_xy2 - plate_radius), 0])
+            circle (r = plate_radius, $fn = sides);
+          translate ([plate_xy2 - plate_radius, plate_xy2 - plate_radius, 0])
+            circle (r = plate_radius, $fn = sides);
         }
       }
 
-      translate ([0, 0, plate_thickness - 0.01]) {
+      translate ([0, 0, plate_thickness - render_fix]) {
         difference () {
-          cylinder (d = ring_id + (ring_wall * 2), h = ring_hgt, $fn = sides);
-          cylinder (d = ring_id, h = ring_hgt + 0.01, $fn = sides);
+          cylinder (d = pipe_dia + (pipe_wall * 2), h = pipe_hgt, $fn = sides);
+          cylinder (d = pipe_dia, h = pipe_hgt + render_fix, $fn = sides);
         }
       }
     }
@@ -151,6 +152,8 @@ module motor_mount () {
     //
     //  Screw holes for mounting plate
     //
+    mtg_screw_offset = 35.0; // Distance from center to mounting hole (FIXME!)
+
     for (i = [45:90:359]) {
       x = sin (i) * mtg_screw_offset;
       y = cos (i) * mtg_screw_offset;
@@ -164,53 +167,55 @@ module motor_mount () {
     //
     for (i = [0:90:359]) {
       render_fix = 0.1;
-      x = sin (i) * (((ring_id + ring_wall) / 2) - render_fix);
-      y = cos (i) * (((ring_id + ring_wall) / 2) - render_fix);
+      x = sin (i) * (((pipe_dia + pipe_wall) / 2) - render_fix);
+      y = cos (i) * (((pipe_dia + pipe_wall) / 2) - render_fix);
 
-      translate ([x, y, plate_thickness + (ring_hgt / 2)])
+      translate ([x, y, plate_thickness + (pipe_hgt / 2)])
         rotate ([sin (i) * 90, cos (i) * 90, 90])
-          cylinder (d = shaft_screw_dia, h = ring_wall + (render_fix * 2), $fn = sides, center = true);
+          cylinder (d = shaft_screw_dia, h = pipe_wall + (render_fix * 2), $fn = sides, center = true);
     }
   }
 }
 
-module pvc_pipe (od = 1.900, id = 1.590, len = 100) {
+//
+//  More of a tee pipe, but we use it as a hopper. Defaults are for the main
+//  part of the body to be PVC schedule 40 1-1/2" and the tee to be 1-1/4".
+//
+module hopper (od = 48.26, id = 40.38, len = 100, tee_od = 42.16, tee_id = 34.54, tee_offset = 40.00, tee_height = 60.00) {
   difference () {
-    cylinder (d = i_to_mm (od), h = len, $fn = sides);
-    cylinder (d = i_to_mm (id), h = len + render_fix, $fn = sides);
+    union () {
+      cylinder (d = od, h = len, $fn = sides);
+      rotate ([0, 90, 0])
+        translate ([-tee_offset, 0, 0])
+          cylinder (d = tee_od, h = tee_height + render_fix, $fn = sides);
+    }
+    union () {
+      cylinder (d = id, h = len + render_fix, $fn = sides);
+      rotate ([0, 90, 0])
+        translate ([-tee_offset, 0, 0])
+          cylinder (d = tee_id, h = tee_height + (render_fix * 2), $fn = sides);
+    }
   }
 }
 
-module hopper (od = 1.900, id = 1.590, len = 100, tee_od = 1.900, tee_id = 1.590, tee_offset = 40, tee_height = 60) {
-  difference () {
-    pvc_pipe (od = od, id = id, len = len);
-    rotate ([0, 90, 0])
-      translate ([-tee_offset, 0, id / 2])
-        cylinder (d = id * 25.4, h = 60, $fn = sides);
-  }
-
-  rotate ([0, 90, 0])
-    translate ([-tee_offset, 0, id / 2])
-      pvc_pipe (od = tee_od, id = tee_id, len = tee_height);
-}
-
-module chute (od = 2.210, id = 1.900, chute_ring_ = 1.00) {
-  od_mm = od * 25.4;
-  id_mm = id * 25.4;
-  chute_ring_mm = chute_ring_ * 25.4;
+//
+//  Creates a chute that attaches to the end of the hopper. Default
+//  is for it to fit over a section of PVC schedule 40 1-1/2" pipe.
+//
+module chute (od = 56.13, id = 48.26, chute_ring = 25.00) {
   wall = 2.00;
-  pipe_rad = od_mm / 2;
+  pipe_rad = od / 2;
 
   difference () {
     union () {
-      cylinder (d = od_mm, h = chute_ring_mm, $fn = sides);
+      cylinder (d = od, h = chute_ring, $fn = sides);
 
-      translate ([-od_mm / 2, -od_mm / 2, chute_ring_mm - wall])
-        cube ([od_mm, od_mm / 2, wall]);
+      translate ([-od / 2, -od / 2, chute_ring - wall])
+        cube ([od, od / 2, wall]);
     }
 
     translate ([0, 0, -render_fix])
-      cylinder (d = id_mm, h = chute_ring_mm + wall + (render_fix * 2), $fn = sides);
+      cylinder (d = id, h = chute_ring + wall + (render_fix * 2), $fn = sides);
   }
 
   chute_len   = 60.0;  // Length of chute, in mm (actual length, not Z)
@@ -222,14 +227,14 @@ module chute (od = 2.210, id = 1.900, chute_ring_ = 1.00) {
   chute_exit = chute_width / 2;
 
   points = [
-    [pipe_rad - 0,                                    0, chute_ring_mm],
-    [pipe_rad - chute_wall,                           0, chute_ring_mm],
-    [pipe_rad - 0,               -pipe_rad + chute_wall, chute_ring_mm],
-    [pipe_rad - chute_wall,      -pipe_rad + chute_wall, chute_ring_mm],
-    [chute_exit,              -(chute_drop - chute_lip),     chute_len],
-    [chute_exit - chute_wall, -(chute_drop - chute_lip),     chute_len],
-    [chute_exit,                            -chute_drop,     chute_len],
-    [chute_exit - chute_wall,               -chute_drop,     chute_len],
+    [pipe_rad - 0,                                    0, chute_ring],
+    [pipe_rad - chute_wall,                           0, chute_ring],
+    [pipe_rad - 0,               -pipe_rad + chute_wall, chute_ring],
+    [pipe_rad - chute_wall,      -pipe_rad + chute_wall, chute_ring],
+    [chute_exit,              -(chute_drop - chute_lip),  chute_len],
+    [chute_exit - chute_wall, -(chute_drop - chute_lip),  chute_len],
+    [chute_exit,                            -chute_drop,  chute_len],
+    [chute_exit - chute_wall,               -chute_drop,  chute_len],
   ];
 
   for (i = [-1 : 2 : 1]) {
@@ -242,14 +247,14 @@ module chute (od = 2.210, id = 1.900, chute_ring_ = 1.00) {
   }
 
   polypoints = [
-    [ pipe_rad,     -(pipe_rad - chute_wall), chute_ring_mm],
-    [ chute_exit,          -(chute_drop + 0),     chute_len],
-    [-chute_exit,          -(chute_drop + 0),     chute_len],
-    [-pipe_rad,     -(pipe_rad - chute_wall), chute_ring_mm],
-    [ pipe_rad,              -(pipe_rad - 0), chute_ring_mm],
-    [ chute_exit, -(chute_drop + chute_wall),     chute_len],
-    [-chute_exit, -(chute_drop + chute_wall),     chute_len],
-    [-pipe_rad,              -(pipe_rad - 0), chute_ring_mm],
+    [ pipe_rad,     -(pipe_rad - chute_wall), chute_ring],
+    [ chute_exit,          -(chute_drop + 0),  chute_len],
+    [-chute_exit,          -(chute_drop + 0),  chute_len],
+    [-pipe_rad,     -(pipe_rad - chute_wall), chute_ring],
+    [ pipe_rad,              -(pipe_rad - 0), chute_ring],
+    [ chute_exit, -(chute_drop + chute_wall),  chute_len],
+    [-chute_exit, -(chute_drop + chute_wall),  chute_len],
+    [-pipe_rad,              -(pipe_rad - 0), chute_ring],
   ];
 
   polyfaces = [
@@ -267,17 +272,25 @@ module chute (od = 2.210, id = 1.900, chute_ring_ = 1.00) {
 //
 //  Lay some pipe :)
 //
-total_len = 120;
+//  Reminder:
+//    % - Render the part in gray and no STL output
+//    * - Disable the part
+//    # - Highlight the part in light red
+//
+auger_len             =  120.0; // Length of auger
+chute_ring_len        =   25.0; // Length of chute mounting ring
+motor_height          =   40.0; // Height of motor
+motor_plate_thickness =    2.0; // Thickless for mounting plate
 
 %Nema17 (motor_height);
 
-translate ([0, 0, plate_thickness]) {
-  %myAuger (auger_len = total_len);
-  %hopper (len = total_len, tee_od = PVC_S40 [PVC_S40_1_250][PVC_S40_OD], tee_id = PVC_S40 [PVC_S40_1_250][PVC_S40_ID]);
+translate ([0, 0, motor_plate_thickness]) {
+  %auger_with_hub (auger_len = auger_len);
+  %hopper (len = auger_len);
 
-  %translate ([0, 0, total_len - i_to_mm (chute_ring_len)])
+  translate ([0, 0, auger_len - chute_ring_len])
     rotate ([0, 0, 270])
-      chute ();
+      %chute ();
 }
 
-%motor_mount ();
+motor_mount ();
