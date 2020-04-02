@@ -12,7 +12,7 @@ sides = $preview ? 100 : 360;
 
 //
 //  Standard NEMA-17 stepper motor. The body width and breadth
-//  is fixed, but the length can vary. 
+//  is fixed, but the length can vary.
 //
 module Nema17 (motor_height = 40) {
   translate ([0, 0, -motor_height]) {
@@ -99,82 +99,6 @@ module auger_with_hub (auger_len = 120) {
   translate ([0, 0, Motor_shaft_len])
     rotate ([180, 0, 135])
       motor_hub (Auger_shaft_radius * 2, Motor_shaft_len);
-}
-
-//
-//  Mounting plate for NEMA-17 stepper motor and a ring to
-//  accomodate mounting a pipe. The defaults are for PVC
-//  schedule 40 1-1/2".
-//
-module motor_mount (plate_xy = 60.00, plate_thickness = 2.0, plate_radius = 2.00, pipe_dia = 48.26, pipe_hgt = 12.70, pipe_wall = 2.00) {
-  difference () {
-    union () {
-      linear_extrude (plate_thickness) {
-        hull () {
-          plate_xy2 = plate_xy / 2;
-
-          translate ([-(plate_xy2 - plate_radius), -(plate_xy2 - plate_radius), 0])
-            circle (r = plate_radius, $fn = sides);
-          translate ([-(plate_xy2 - plate_radius), plate_xy2 - plate_radius, 0])
-            circle (r = plate_radius, $fn = sides);
-          translate ([plate_xy2 - plate_radius, -(plate_xy2 - plate_radius), 0])
-            circle (r = plate_radius, $fn = sides);
-          translate ([plate_xy2 - plate_radius, plate_xy2 - plate_radius, 0])
-            circle (r = plate_radius, $fn = sides);
-        }
-      }
-
-      translate ([0, 0, plate_thickness - render_fix]) {
-        difference () {
-          cylinder (d = pipe_dia + (pipe_wall * 2), h = pipe_hgt, $fn = sides);
-          cylinder (d = pipe_dia, h = pipe_hgt + render_fix, $fn = sides);
-        }
-      }
-    }
-
-    //
-    //  Shaft hole
-    //
-    translate ([0, 0, -render_fix])
-      cylinder (d = shaft_base_dia, h = shaft_base_hgt + (render_fix * 2), $fn = sides);
-
-    //
-    //  Screw holes for motor
-    //
-    for (i = [45:90:359]) {
-      x = sin (i) * shaft_screw_rad;
-      y = cos (i) * shaft_screw_rad;
-
-      translate ([x, y, -render_fix])
-        cylinder (d = shaft_screw_dia, h = plate_thickness + (render_fix * 2), $fn = sides);
-    }
-
-    //
-    //  Screw holes for mounting plate
-    //
-    mtg_screw_offset = 35.0; // Distance from center to mounting hole (FIXME!)
-
-    for (i = [45:90:359]) {
-      x = sin (i) * mtg_screw_offset;
-      y = cos (i) * mtg_screw_offset;
-
-      translate ([x, y, -render_fix])
-        cylinder (d = shaft_screw_dia, h = plate_thickness + (render_fix * 2), $fn = sides);
-    }
-
-    //
-    //  Screw holes for pipe
-    //
-    for (i = [0:90:359]) {
-      render_fix = 0.1;
-      x = sin (i) * (((pipe_dia + pipe_wall) / 2) - render_fix);
-      y = cos (i) * (((pipe_dia + pipe_wall) / 2) - render_fix);
-
-      translate ([x, y, plate_thickness + (pipe_hgt / 2)])
-        rotate ([sin (i) * 90, cos (i) * 90, 90])
-          cylinder (d = shaft_screw_dia, h = pipe_wall + (render_fix * 2), $fn = sides, center = true);
-    }
-  }
 }
 
 //
@@ -270,6 +194,82 @@ module chute (od = 56.13, id = 48.26, chute_ring = 25.00) {
 }
 
 //
+//  Mounting plate for NEMA-17 stepper motor and a ring to
+//  accomodate mounting a pipe. The defaults are for PVC
+//  schedule 40 1-1/2".
+//
+module motor_mount (plate_xy = 60.00, plate_thickness = 2.0, plate_radius = 2.00, pipe_dia = 48.26, pipe_hgt = 12.70, pipe_wall = 2.00) {
+  difference () {
+    union () {
+      linear_extrude (plate_thickness) {
+        hull () {
+          plate_xy2 = plate_xy / 2;
+
+          translate ([-(plate_xy2 - plate_radius), -(plate_xy2 - plate_radius), 0])
+            circle (r = plate_radius, $fn = sides);
+          translate ([-(plate_xy2 - plate_radius), plate_xy2 - plate_radius, 0])
+            circle (r = plate_radius, $fn = sides);
+          translate ([plate_xy2 - plate_radius, -(plate_xy2 - plate_radius), 0])
+            circle (r = plate_radius, $fn = sides);
+          translate ([plate_xy2 - plate_radius, plate_xy2 - plate_radius, 0])
+            circle (r = plate_radius, $fn = sides);
+        }
+      }
+
+      translate ([0, 0, plate_thickness - render_fix]) {
+        difference () {
+          cylinder (d = pipe_dia + (pipe_wall * 2), h = pipe_hgt, $fn = sides);
+          cylinder (d = pipe_dia, h = pipe_hgt + render_fix, $fn = sides);
+        }
+      }
+    }
+
+    //
+    //  Shaft hole
+    //
+    translate ([0, 0, -render_fix])
+      cylinder (d = shaft_base_dia, h = shaft_base_hgt + (render_fix * 2), $fn = sides);
+
+    //
+    //  Screw holes for motor
+    //
+    for (i = [45:90:359]) {
+      x = sin (i) * shaft_screw_rad;
+      y = cos (i) * shaft_screw_rad;
+
+      translate ([x, y, -render_fix])
+        cylinder (d = shaft_screw_dia, h = plate_thickness + (render_fix * 2), $fn = sides);
+    }
+
+    //
+    //  Screw holes for mounting plate
+    //
+    mtg_screw_offset = 35.0; // Distance from center to mounting hole (FIXME!)
+
+    for (i = [45:90:359]) {
+      x = sin (i) * mtg_screw_offset;
+      y = cos (i) * mtg_screw_offset;
+
+      translate ([x, y, -render_fix])
+        cylinder (d = shaft_screw_dia, h = plate_thickness + (render_fix * 2), $fn = sides);
+    }
+
+    //
+    //  Screw holes for pipe
+    //
+    for (i = [0:90:359]) {
+      render_fix = 0.1;
+      x = sin (i) * (((pipe_dia + pipe_wall) / 2) - render_fix);
+      y = cos (i) * (((pipe_dia + pipe_wall) / 2) - render_fix);
+
+      translate ([x, y, plate_thickness + (pipe_hgt / 2)])
+        rotate ([sin (i) * 90, cos (i) * 90, 90])
+          cylinder (d = shaft_screw_dia, h = pipe_wall + (render_fix * 2), $fn = sides, center = true);
+    }
+  }
+}
+
+//
 //  Lay some pipe :)
 //
 //  Reminder:
@@ -293,4 +293,4 @@ translate ([0, 0, motor_plate_thickness]) {
       %chute ();
 }
 
-motor_mount ();
+motor_mount (pipe_dia = 48.26 + 0.20);
