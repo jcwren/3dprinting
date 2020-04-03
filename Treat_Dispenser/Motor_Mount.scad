@@ -290,7 +290,7 @@ translate ([0, 0, motor_plate_thickness]) {
 
   translate ([0, 0, auger_len - chute_ring_len])
     rotate ([0, 0, 270])
-      %chute ();
+      %chute (id = 48.26 + 0.25);
 }
 
-motor_mount (pipe_dia = 48.26 + 0.20);
+%motor_mount (pipe_dia = 48.26 + 0.25);
