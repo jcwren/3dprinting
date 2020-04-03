@@ -198,7 +198,7 @@ module chute (od = 56.13, id = 48.26, chute_ring = 25.00) {
 //  accomodate mounting a pipe. The defaults are for PVC
 //  schedule 40 1-1/2".
 //
-module motor_mount (plate_xy = 60.00, plate_thickness = 2.0, plate_radius = 2.00, pipe_dia = 48.26, pipe_hgt = 12.70, pipe_wall = 2.00) {
+module motor_mount (plate_xy = 60.00, plate_thickness = 2.0, plate_radius = 2.00, pipe_dia = 48.26, pipe_hgt = 12.70, pipe_wall = 2.50) {
   difference () {
     union () {
       linear_extrude (plate_thickness) {
@@ -239,6 +239,8 @@ module motor_mount (plate_xy = 60.00, plate_thickness = 2.0, plate_radius = 2.00
 
       translate ([x, y, -render_fix])
         cylinder (d = shaft_screw_dia, h = plate_thickness + (render_fix * 2), $fn = sides);
+      translate ([x, y, plate_thickness + render_fix])
+        cylinder (d = shaft_screw_head_dia, h = pipe_hgt + render_fix, $fn = sides);
     }
 
     //
