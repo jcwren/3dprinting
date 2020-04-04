@@ -105,19 +105,81 @@ module auger_with_hub (auger_len = 120) {
 //  More of a tee pipe, but we use it as a hopper. Defaults are for the main
 //  part of the body to be PVC schedule 40 1-1/2" and the tee to be 1-1/4".
 //
-module hopper (od = 48.26, id = 40.38, len = 100, tee_od = 42.16, tee_id = 34.54, tee_offset = 40.00, tee_height = 60.00) {
-  difference () {
-    union () {
-      cylinder (d = od, h = len, $fn = sides);
-      rotate ([0, 90, 0])
-        translate ([-tee_offset, 0, 0])
-          cylinder (d = tee_od, h = tee_height + render_fix, $fn = sides);
-    }
+module hopper (od = 48.26, id = 40.38, len = 100, tee_id = 25, tee_offset = 40.00, tee_height = 10.00) {
+  //
+  //  Auger tube with hole in it
+  //
+  %difference () {
+    cylinder (d = od, h = len, $fn = sides);
     union () {
       cylinder (d = id, h = len + render_fix, $fn = sides);
       rotate ([0, 90, 0])
         translate ([-tee_offset, 0, 0])
-          cylinder (d = tee_id, h = tee_height + (render_fix * 2), $fn = sides);
+          cylinder (d = tee_id, h = (od / 2)+ render_fix, $fn = sides);
+    }
+  }
+
+  wall = 2.00;
+  overhang = 10.00;
+
+  //
+  //  Sleeve
+  //
+  %translate ([0, 0, (tee_offset - (tee_id / 2)) - overhang]) {
+    difference () {
+      union () {
+        cylinder (d = od + (wall * 2), h = tee_id + (overhang * 2), $fn = sides);
+
+        rotate ([0, 90, 0])
+          translate ([-((tee_id / 2) + overhang), 0, -render_fix])
+            cylinder (d = tee_id + (wall * 2), h = (od / 2) + tee_height + (render_fix * 2), $fn = sides);
+      }
+
+      union () {
+        translate ([0, 0, -render_fix])
+          cylinder (d = od, h = tee_id + (overhang * 2) + (render_fix * 2), $fn = sides);
+
+        rotate ([0, 90, 0])
+          translate ([-((tee_id / 2) + overhang), 0, 0])
+            cylinder (d = tee_id, h = (od / 2) + 10 + (render_fix * 2), $fn = sides);
+      }
+
+      translate ([-((od / 2) + wall + render_fix), -((od / 2) + wall + render_fix), -render_fix])
+        cube ([((od / 100) * 35) + (wall * 2), od + (wall * 2), tee_id + (overhang * 2) + tee_height + (render_fix * 2)]);
+    }
+  }
+
+  //
+  //  Bowl
+  //
+  translate ([(od / 2) + wall, 0, tee_offset]) {
+    rotate ([0, 90, 0]) {
+      difference () {
+        _id = tee_id + (wall * 2);
+        _od = _id + (wall * 2);
+        neck_height = 40;
+        cone_height = 25;
+        rim_height = 40;
+        rim_dia = 80;
+
+        union () {
+          cylinder (d = _od, h = neck_height, $fn = sides);
+          translate ([0, 0, neck_height]) {
+            cylinder (d1 = _od, d2 = rim_dia + (wall * 2), h = cone_height, $fn = sides);
+            translate ([0, 0, cone_height])
+              cylinder (d = rim_dia + (wall * 2), h = rim_height, $fn = sides);
+          }
+        }
+        union () {
+          translate ([0, 0, -render_fix])
+            cylinder (d = _id, h = neck_height + (render_fix * 2), $fn = sides);
+          translate ([0, 0, neck_height]) {
+            cylinder (d1 = _id, d2 = rim_dia, h = cone_height + render_fix, $fn = sides);
+            translate ([0, 0, cone_height])
+              cylinder (d = rim_dia, h = rim_height + render_fix, $fn = sides);
+          }
+        }
+      }
     }
   }
 }
@@ -288,7 +350,7 @@ motor_plate_thickness =    2.0; // Thickless for mounting plate
 
 translate ([0, 0, motor_plate_thickness]) {
   %auger_with_hub (auger_len = auger_len);
-  %hopper (len = auger_len);
+  hopper (len = auger_len);
 
   translate ([0, 0, auger_len - chute_ring_len])
     rotate ([0, 0, 270])
