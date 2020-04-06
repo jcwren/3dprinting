@@ -17,7 +17,7 @@ sides = $preview ? 100 : 360;
 module Nema17 (motor_height = 40) {
   translate ([0, 0, -motor_height]) {
     difference () {
-      union (){
+      union () {
         translate ([0, 0, motor_height / 2]) {
           intersection () {
             cube ([42.3, 42.3, motor_height], center = true);
@@ -28,13 +28,13 @@ module Nema17 (motor_height = 40) {
         }
         translate ([0, 0, motor_height])
           cylinder (h = 2, r = 11, $fn = 24);
-        translate ([0, 0, motor_height  +2])
-          cylinder(h = 20, r = 2.5, $fn = 24);
+        translate ([0, 0, motor_height  + 2])
+          cylinder (h = 20, r = 2.5, $fn = 24);
       }
 
       for (i = [0 : 3]) {
-        rotate ([0, 0, 90  *i])
-          translate ([15.5, 15.5, motor_height  -4.5])
+        rotate ([0, 0, 90 * i])
+          translate ([15.5, 15.5, motor_height - 4.5])
             cylinder (h = 5, r = 1.5, $fn = 24);
       }
     }
@@ -44,7 +44,7 @@ module Nema17 (motor_height = 40) {
 //
 //  Creates an auger, and adds the motor shaft hub
 //
-module auger_with_hub (auger_len = 120) {
+module auger_with_hub (auger_len = 120, rotation_angle = 0) {
   Auger_twist                 = 360 * 5;    // The total amount of twist, in degrees
   Auger_diameter              = 40.0;       // The final diameter of the auger
   Auger_num_flights           = 1;          // The number of "flights" [1:5]
@@ -70,21 +70,23 @@ module auger_with_hub (auger_len = 120) {
   inch  = 25.4 * mm;
 
   difference () {
-    auger (
-                    r1 = Auger_shaft_radius,
-                    r2 = Auger_shaft_radius + Auger_flight_radius,
-                     h = Auger_flight_length,
-         overhangAngle = Printer_overhang_capability,
-            multiStart = Auger_num_flights,
-       flightThickness = Auger_flight_thickness,
-                 turns = Auger_twist / 360,
-                 pitch = 0,
-      supportThickness = Auger_perimeter_thickness,
-            handedness = Auger_handedness,
-                   $fn = sides,
-                   $fa = 12,
-                   $fs = 5
-    );
+    rotate ([0, 0, rotation_angle]) {
+      auger (
+                      r1 = Auger_shaft_radius,
+                      r2 = Auger_shaft_radius + Auger_flight_radius,
+                       h = Auger_flight_length,
+           overhangAngle = Printer_overhang_capability,
+              multiStart = Auger_num_flights,
+         flightThickness = Auger_flight_thickness,
+                   turns = Auger_twist / 360,
+                   pitch = 0,
+        supportThickness = Auger_perimeter_thickness,
+              handedness = Auger_handedness,
+                     $fn = sides,
+                     $fa = 12,
+                     $fs = 5
+      );
+    }
 
     //
     //  Remove material where motor shaft will be placed later
@@ -109,7 +111,7 @@ module hopper (od = 48.26, id = 40.38, len = 100, tee_id = 25, tee_offset = 40.0
   //
   //  Auger tube with hole in it
   //
-  %difference () {
+  difference () {
     cylinder (d = od, h = len, $fn = sides);
     union () {
       cylinder (d = id, h = len + render_fix, $fn = sides);
@@ -125,7 +127,7 @@ module hopper (od = 48.26, id = 40.38, len = 100, tee_id = 25, tee_offset = 40.0
   //
   //  Sleeve
   //
-  %translate ([0, 0, (tee_offset - (tee_id / 2)) - overhang]) {
+  translate ([0, 0, (tee_offset - (tee_id / 2)) - overhang]) {
     difference () {
       union () {
         cylinder (d = od + (wall * 2), h = tee_id + (overhang * 2), $fn = sides);
@@ -349,8 +351,8 @@ motor_plate_thickness =    2.0; // Thickless for mounting plate
 %Nema17 (motor_height);
 
 translate ([0, 0, motor_plate_thickness]) {
-  %auger_with_hub (auger_len = auger_len);
-  hopper (len = auger_len);
+  #auger_with_hub (auger_len = auger_len, rotation_angle = 359 - (360 * $t));
+  %hopper (len = auger_len);
 
   translate ([0, 0, auger_len - chute_ring_len])
     rotate ([0, 0, 270])
