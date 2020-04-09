@@ -1,12 +1,16 @@
 use <Auger.scad>;
 use <motor_hub.scad>;
 
-shaft_dia             =   4.8;      // Diameter of hole for motor shaft
-shaft_base_dia        =  22.5;      // Diameter of ring around motor shaft
-shaft_base_hgt        =   2.0;      // Height of ring around motor shaft
-shaft_screw_rad       =  21.92;     // Radius of motor screw holes from shaft center ((√(a² + b²)) / 2)
-shaft_screw_dia       =   3.2;      // Diameter of threads for M3 mounting screw (with 0.2 fudge factor)
-plate_thickness       =   2.0;      // Thickness of motor mounting plate
+shaft_dia       =   4.8;      // Diameter of hole for motor shaft
+shaft_base_dia  =  22.5;      // Diameter of ring around motor shaft
+shaft_base_hgt  =   2.0;      // Height of ring around motor shaft
+shaft_screw_rad =  21.92;     // Radius of motor screw holes from shaft center ((√(a² + b²)) / 2)
+shaft_screw_dia =   3.2;      // Diameter of threads for M3 mounting screw (with 0.2 fudge factor)
+plate_thickness =   2.5;      // Thickness of motor mounting plate
+rim_dia         =  90.0;      // Inner diameter of bowl
+rim_height      =  40.0;      // Height of top portion of bowl
+cone_height     =  25.0;      // Height of cone portion of bowl
+neck_height     =  55.0;      // Height of neck portion of bowl
 
 sides      = $preview ? 100 : 360;
 render_fix = $preview ? 0.01 : 0.00;
@@ -45,10 +49,6 @@ module nema17 (motor_height = 40) {
 module bowl (id = 40.4, wall = 2.00) {
   difference () {
     od = id + (wall * 2);
-    rim_dia = 90;
-    rim_height = 40;
-    cone_height = 25;
-    neck_height = 55;
 
     union () {
       cylinder (d = od, h = neck_height, $fn = sides);
@@ -137,65 +137,45 @@ module motor_mount (plate_xy = 43.00, plate_thickness = 2.0, plate_radius = 0.5,
   //  If no side walls, then create arms to support motor
   //
   if (side_walls == 0) {
-    nib_height = 5;
-    hole_edge = shaft_screw_rad + shaft_screw_dia;
-    len = (94 / 2) - hole_edge - 1.5;
+    nib_height = 8;
+    hole_edge = shaft_screw_rad;// + shaft_screw_dia;
+    arm_len = ((rim_dia + (wall * 2)) / 2) - hole_edge - 0.5;
+    w = 5;
+    pullback = 1.5;
+
     px = [
       [
-        [ 0,  3, -render_fix],
-        [ 3,  0, -render_fix]
+        [ 0,  w, -render_fix],
+        [ w,  0, -render_fix]
       ], [
-        [ 3,  0, -render_fix],
-        [ 0, -3, -render_fix]
+        [ w,  0, -render_fix],
+        [ 0, -w, -render_fix]
       ], [
-        [ 0, -3, -render_fix],
-        [-3,  0, -render_fix]
+        [ 0, -w, -render_fix],
+        [-w,  0, -render_fix]
       ], [
-        [-3,  0, -render_fix],
-        [ 0,  3, -render_fix]
+        [-w,  0, -render_fix],
+        [ 0,  w, -render_fix]
       ]
     ];
 
     difference () {
-      union () {
-        //
-        //  Create the arms
-        //
-        for (i = [0 : 3]) {
-          a = (i * 90) + 45;
-          x = sin (a) * hole_edge;
-          y = cos (a) * hole_edge;
+      //
+      //  Create the arms
+      //
+      for (i = [0 : 3]) {
+        a = (i * 90) + 45;
+        x = sin (a) * hole_edge;
+        y = cos (a) * hole_edge;
 
-          translate ([x, y, 0]) {
-            hull () {
-              for (j = [0 : 1]) {
-                translate (px [i][j]) {
-                  cylinder (d = wall, h = wall, $fn = sides);
-                  translate ([sin (a) * len, cos (a) * len, 0])
-                    cylinder (d = wall, h = wall, $fn = sides);
-                }
-              }
-            }
-          }
-        }
-
-        //
-        //  Now create the nibs that hang over the bowl
-        //
-        for (i = [0 : 3]) {
-          a = (i * 90) + 45;
-          x = sin (a) * hole_edge;
-          y = cos (a) * hole_edge;
-          pullback = 1.5;
-
-          translate ([x, y, -nib_height]) {
-            hull () {
-              for (j = [0 : 1]) {
-                translate (px [i][j]) {
-                  translate ([sin (a) * (len - pullback), cos (a) * (len - pullback), 0])
-                    cylinder (d = wall, h = nib_height, $fn = sides);
-                  translate ([sin (a) * len, cos (a) * len, 0])
-                    cylinder (d = wall, h = nib_height, $fn = sides);
+        translate ([x, y, 0]) {
+          hull () {
+            for (j = [0 : 1]) {
+              translate (px [i][j]) {
+                translate ([0, 0, -nib_height]) {
+                  cylinder (d = 2, h = nib_height + plate_thickness, $fn = sides);
+                  translate ([sin (a) * arm_len, cos (a) * arm_len, 0])
+                    cylinder (d = 2, h = nib_height + plate_thickness, $fn = sides);
                 }
               }
             }
@@ -208,7 +188,7 @@ module motor_mount (plate_xy = 43.00, plate_thickness = 2.0, plate_radius = 0.5,
       //  arm nibs to the correct diameter and give them a bit of curvature.
       //
       translate ([0, 0, -(nib_height + (render_fix * 2))])
-        cylinder (d = 94, h = nib_height + (render_fix * 2), $fn = sides);
+        cylinder (d = 94, h = nib_height, $fn = sides);
     }
   }
 }
@@ -275,14 +255,14 @@ module auger_with_hub (auger_len = 120, rotation_angle = 0) {
       motor_hub (auger_shaft_radius * 2, motor_shaft_len);
 }
 
-*translate ([0, 0, plate_thickness])
+%translate ([0, 0, plate_thickness])
   rotate ([0, 180, 0])
     nema17 ();
 
-*motor_mount ();
+%motor_mount (plate_thickness = plate_thickness);
 
-*rotate ([0, 180, 0])
+%rotate ([0, 180, 0])
   auger_with_hub ();
 
-translate ([0, 0, -120])
+%translate ([0, 0, -120])
   bowl ();
