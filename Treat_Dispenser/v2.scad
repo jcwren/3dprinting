@@ -11,6 +11,8 @@ rim_dia         =  90.0;      // Inner diameter of bowl
 rim_height      =  40.0;      // Height of top portion of bowl
 cone_height     =  25.0;      // Height of cone portion of bowl
 neck_height     =  55.0;      // Height of neck portion of bowl
+arm_width       =   5.0;      // Width of motor support arms
+arm_nib_height  =   8.0;      // Length arm nib extends down bowl side
 
 sides      = $preview ? 100 : 360;
 render_fix = $preview ? 0.01 : 0.00;
@@ -80,15 +82,15 @@ module motor_mount (plate_xy = 43.00, plate_thickness = 2.0, plate_radius = 0.5,
     union () {
       linear_extrude (plate_thickness + side_walls) {
         hull () {
-          plate_xy2 = (plate_xy + (wall * 1)) / 2;
+          p = ((plate_xy + wall) / 2) - plate_radius;
 
-          translate ([-(plate_xy2 - plate_radius), -(plate_xy2 - plate_radius), 0])
+          translate ([-p, -p, 0])
             circle (r = plate_radius, $fn = sides);
-          translate ([-(plate_xy2 - plate_radius), plate_xy2 - plate_radius, 0])
+          translate ([-p, p, 0])
             circle (r = plate_radius, $fn = sides);
-          translate ([plate_xy2 - plate_radius, -(plate_xy2 - plate_radius), 0])
+          translate ([p, -p, 0])
             circle (r = plate_radius, $fn = sides);
-          translate ([plate_xy2 - plate_radius, plate_xy2 - plate_radius, 0])
+          translate ([p, p, 0])
             circle (r = plate_radius, $fn = sides);
         }
       }
@@ -99,15 +101,15 @@ module motor_mount (plate_xy = 43.00, plate_thickness = 2.0, plate_radius = 0.5,
         union () {
           linear_extrude (plate_thickness + side_walls + render_fix) {
             hull () {
-              plate_xy2 = plate_xy / 2;
+              p = (plate_xy / 2) - plate_radius;
 
-              translate ([-(plate_xy2 - plate_radius), -(plate_xy2 - plate_radius), 0])
+              translate ([-p, -p, 0])
                 circle (r = plate_radius, $fn = sides);
-              translate ([-(plate_xy2 - plate_radius), plate_xy2 - plate_radius, 0])
+              translate ([-p, p, 0])
                 circle (r = plate_radius, $fn = sides);
-              translate ([plate_xy2 - plate_radius, -(plate_xy2 - plate_radius), 0])
+              translate ([p, -p, 0])
                 circle (r = plate_radius, $fn = sides);
-              translate ([plate_xy2 - plate_radius, plate_xy2 - plate_radius, 0])
+              translate ([p, p, 0])
                 circle (r = plate_radius, $fn = sides);
             }
           }
@@ -125,10 +127,7 @@ module motor_mount (plate_xy = 43.00, plate_thickness = 2.0, plate_radius = 0.5,
     //  Screw holes for motor
     //
     for (i = [45:90:359]) {
-      x = sin (i) * shaft_screw_rad;
-      y = cos (i) * shaft_screw_rad;
-
-      translate ([x, y, -render_fix])
+      translate ([sin (i) * shaft_screw_rad, cos (i) * shaft_screw_rad, -render_fix])
         cylinder (d = shaft_screw_dia, h = plate_thickness + (render_fix * 2), $fn = sides);
     }
   }
@@ -137,25 +136,22 @@ module motor_mount (plate_xy = 43.00, plate_thickness = 2.0, plate_radius = 0.5,
   //  If no side walls, then create arms to support motor
   //
   if (side_walls == 0) {
-    nib_height = 8;
-    hole_edge = shaft_screw_rad;// + shaft_screw_dia;
+    hole_edge = shaft_screw_rad;
     arm_len = ((rim_dia + (wall * 2)) / 2) - hole_edge - 0.5;
-    w = 5;
-    pullback = 1.5;
 
     px = [
       [
-        [ 0,  w, -render_fix],
-        [ w,  0, -render_fix]
+        [ 0,          arm_width, -render_fix],
+        [ arm_width,          0, -render_fix]
       ], [
-        [ w,  0, -render_fix],
-        [ 0, -w, -render_fix]
+        [ arm_width,          0, -render_fix],
+        [ 0,         -arm_width, -render_fix]
       ], [
-        [ 0, -w, -render_fix],
-        [-w,  0, -render_fix]
+        [ 0,         -arm_width, -render_fix],
+        [-arm_width,          0, -render_fix]
       ], [
-        [-w,  0, -render_fix],
-        [ 0,  w, -render_fix]
+        [-arm_width,          0, -render_fix],
+        [ 0,          arm_width, -render_fix]
       ]
     ];
 
@@ -165,17 +161,15 @@ module motor_mount (plate_xy = 43.00, plate_thickness = 2.0, plate_radius = 0.5,
       //
       for (i = [0 : 3]) {
         a = (i * 90) + 45;
-        x = sin (a) * hole_edge;
-        y = cos (a) * hole_edge;
 
-        translate ([x, y, 0]) {
+        translate ([sin (a) * hole_edge, cos (a) * hole_edge, 0]) {
           hull () {
             for (j = [0 : 1]) {
               translate (px [i][j]) {
-                translate ([0, 0, -nib_height]) {
-                  cylinder (d = 2, h = nib_height + plate_thickness, $fn = sides);
+                translate ([0, 0, -arm_nib_height]) {
+                  cylinder (d = 2, h = arm_nib_height + plate_thickness, $fn = sides);
                   translate ([sin (a) * arm_len, cos (a) * arm_len, 0])
-                    cylinder (d = 2, h = nib_height + plate_thickness, $fn = sides);
+                    cylinder (d = 2, h = arm_nib_height + plate_thickness, $fn = sides);
                 }
               }
             }
@@ -187,8 +181,8 @@ module motor_mount (plate_xy = 43.00, plate_thickness = 2.0, plate_radius = 0.5,
       //  Create a cylinder the size of the outside of the bowl to trim the
       //  arm nibs to the correct diameter and give them a bit of curvature.
       //
-      translate ([0, 0, -(nib_height + (render_fix * 2))])
-        cylinder (d = 94, h = nib_height, $fn = sides);
+      translate ([0, 0, -(arm_nib_height + (render_fix * 2))])
+        cylinder (d = rim_dia + (wall * 2), h = arm_nib_height + render_fix, $fn = sides);
     }
   }
 }
