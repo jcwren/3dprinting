@@ -107,7 +107,7 @@ module auger_with_hub (auger_len = 120, rotation_angle = 0) {
 //  More of a tee pipe, but we use it as a hopper. Defaults are for the main
 //  part of the body to be PVC schedule 40 1-1/2" and the tee to be 1-1/4".
 //
-module hopper (od = 48.26, id = 40.38, len = 100, tee_id = 25, tee_offset = 40.00, tee_height = 10.00) {
+module hopper (od = 48.26, id = 40.38, len = 100, tee_id = 34, tee_offset = 40.00, tee_height = 10.00) {
   //
   //  Auger tube with hole in it
   //
