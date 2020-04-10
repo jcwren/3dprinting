@@ -40,7 +40,6 @@ screw_table = [
   [ center_x + (screw_x_ctc / 2), center_y + screw_y_ctc, -render_fix ],
 ];
 
-
 module rounded_box () {
   difference () {
     union () {
