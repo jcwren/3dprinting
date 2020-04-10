@@ -174,12 +174,12 @@ module augerFlight (flightThickness, turns, rHidden, r1, r2, h, extraFlight, han
       )
     );
 
-  echo ("Number of Steps calculations:");
-  echo ("minimum",5);
-  echo ("height step", h /(max ($fs, 0.1)));
-  echo ("angle", 360.0 * turns / $fa);
-  echo ("perimeter size", r2 * 2 * M_PI * turns / max ($fs, 0.1));
-  echo ("numSteps = maximum: ", numSteps);
+  *echo ("Number of Steps calculations:");
+  *echo ("minimum",5);
+  *echo ("height step", h /(max ($fs, 0.1)));
+  *echo ("angle", 360.0 * turns / $fa);
+  *echo ("perimeter size", r2 * 2 * M_PI * turns / max ($fs, 0.1));
+  *echo ("numSteps = maximum: ", numSteps);
 
   heightStep = (h - (flightThickness)) / numSteps;
 
