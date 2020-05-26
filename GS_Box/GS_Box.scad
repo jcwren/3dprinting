@@ -9,7 +9,7 @@ post_y_wid =  75.0;
 post_inset =   6.0;
 post_dia   =   8.0;
 post_hgt   =   5.0;
-post_drill =   3.0;
+post_drill =   2.7;
 sma_dia    =   6.5;
 power_dia  =  13.0;
 sides      = 360;
@@ -78,5 +78,12 @@ module the_lid () {
   }
 }
 
-//the_lid ();
-the_box ();
+//
+//  Draw the box and the lid, connect with unprintably small line to make manifold.
+//
+translate ([0, 0, 0])
+  the_box ();
+translate ([box_width + 5, 0, 0])
+  the_lid ();
+translate ([box_width - 0.01, box_length / 2, 0])
+  cube ([5.01, 0.01, 0.01]);
