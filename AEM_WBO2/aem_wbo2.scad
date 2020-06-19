@@ -1,13 +1,13 @@
 inner_w =  30.00;
 inner_h =  20.00;
 inner_l =  47.00;
-usb_h   =   3.20;
+usb_h   =   3.50;
 usb_w   =   8.50;
 usb_z   =  16.00;
 pcb_h   =   1.53;
 lid_h   =   4.00;
-lid_l   =   9.50;
-pcb_top =   3.00;
+lid_l   =   8.50;
+pcb_top =   3.50;
 walls   =   2.00;
 radius  =   1.00;
 $fn     =  90.00;
