@@ -16,8 +16,8 @@ hole_xuron       = [in2mm ((1 / 16) *  8), in2mm (1.50), in2mm (3.0)];
 hole_sears_short = [in2mm ((1 / 16) *  5), in2mm (0.50), in2mm (1.5)];
 hole_blue        = [in2mm ((1 / 16) *  5), in2mm (0.55), in2mm (2.5)];
 hole_sears_long  = [in2mm ((1 / 16) *  5), in2mm (0.50), in2mm (2.5)];
-hole_stripper_1  = [in2mm ((1 / 16) *  8), in2mm (1.75), in2mm (3.0)];
-hole_stripper_2  = [in2mm ((1 / 16) *  8), in2mm (1.75), in2mm (3.0)];
+hole_stripper_1  = [in2mm ((1 / 32) * 15), in2mm (1.75), in2mm (3.0)];
+hole_stripper_2  = [in2mm ((1 / 32) * 15), in2mm (1.75), in2mm (3.0)];
 hole_screwdriver = [in2mm ((1 / 16) *  8), in2mm ((1 / 16) * 8), in2mm (3.0)];
 
 holes_table = [hole_caliper_1,  hole_caliper_2,  hole_exxcelta,
@@ -38,10 +38,10 @@ loc_table = [[(spacing *  1) + 0,                     (bd - margin) - holes_tabl
              [(spacing *  8) + sumx (holes_table, 6), (bd - holes_table [ 7][1]) / 2,     (bh - holes_table [ 7][2]) + 0.01], // 35 + 5
              [(spacing *  9) + sumx (holes_table, 7), (bd - holes_table [ 8][1]) / 2,     (bh - holes_table [ 8][2]) + 0.01], // 40 + 5
              [(spacing * 10) + sumx (holes_table, 8), (bd - holes_table [ 9][1]) / 2,     (bh - holes_table [ 9][2]) + 0.01], // 45 + 8
-             [(spacing *  1) + in2mm ((1 / 16) * 3),  margin + in2mm (0.25),              (bh - holes_table [10][2]) + 0.01],
+             [(spacing *  1) + in2mm ((1 / 16) * 3),  margin + in2mm (0.15),              (bh - holes_table [10][2]) + 0.01],
             ];
 
-difference () {             
+difference () {
   roundedcube ([bw, bd, bh], radius = in2mm (0.125), apply_to="zmax");
 
   for (i = [0 : len (holes_table) - 1]) {
