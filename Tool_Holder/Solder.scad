@@ -23,7 +23,7 @@ screwdrv = [in2mm (0.120), in2mm (0.120), in2mm (2.25), true];
 hemos    = [in2mm (0.300), in2mm (0.300), in2mm (2.25), false];
 
 holes_table_1 = [alcohol, flux];
-holes_table_2 = [selecta, selecta, pinch, xcelite];
+holes_table_2 = [selecta, selecta, xcelite, pinch];
 holes_table_3 = [knife, knife, screwdrv, hemos];
 holes_table   = [holes_table_1, holes_table_2, holes_table_3];
 
@@ -35,25 +35,25 @@ b2 = [margin + in2mm (0.400) + margin + in2mm (0.400) + margin,
       margin + maxy (holes_table_2) + margin,
       margin + maxz (holes_table_2)
      ];
-b3 = [margin + in2mm (0.350) + margin + in2mm (0.300) + margin,
+b3 = [margin + in2mm (0.350) + margin + in2mm (0.350) + margin,
       margin + maxy (holes_table_3) + margin,
       margin + maxz (holes_table_3)
      ];
 b_table = [b1, b2, b3];
 by = maxy (b_table);
 
-loc_table_1 = [[margin,                               (by - holes_table_1 [0][1]) / 2,      (b1 [2] - holes_table_1 [0][2]) + 0.01],
-               [(margin *  2) + holes_table_1 [0][0], (by - margin) - holes_table_1 [1][1], (b1 [2] - holes_table_1 [1][2]) + 0.01],
+loc_table_1 = [[margin,                              (by - holes_table_1 [0][1]) / 2,            (b1 [2] - holes_table_1 [0][2]) + 0.01],
+               [(margin * 2) + holes_table_1 [0][0], (by - margin) - holes_table_1 [1][1],       (b1 [2] - holes_table_1 [1][2]) + 0.01],
               ];
-loc_table_2 = [[margin,                               margin * 2,                                 (b2 [2] - holes_table_2 [0][2]) + 0.01],
-               [margin,                               (by - (margin * 2)) - holes_table_2 [1][1], (b2 [2] - holes_table_2 [1][2]) + 0.01],
-               [(margin *  2) + holes_table_2 [0][0], margin * 2,                                 (b2 [2] - holes_table_2 [2][2]) + 0.01],
-               [(margin *  2) + holes_table_2 [0][0], (by - (margin * 2)) - holes_table_2 [3][1], (b2 [2] - holes_table_2 [3][2]) + 0.01],
+loc_table_2 = [[margin,                              margin * 2,                                 (b2 [2] - holes_table_2 [0][2]) + 0.01],
+               [margin,                              (by - (margin * 2)) - holes_table_2 [1][1], (b2 [2] - holes_table_2 [1][2]) + 0.01],
+               [(margin * 2) + holes_table_2 [0][0], margin * 2,                                 (b2 [2] - holes_table_2 [2][2]) + 0.01],
+               [(margin * 2) + holes_table_2 [0][0], (by - (margin * 2)) - holes_table_2 [3][1], (b2 [2] - holes_table_2 [3][2]) + 0.01],
               ];
-loc_table_3 = [[margin,                               margin * 2,                                 (b3 [2] - holes_table_3 [0][2]) + 0.01],
-               [(margin *  2) + holes_table_3 [0][0], margin * 2,                                 (b3 [2] - holes_table_3 [2][2]) + 0.01],
-               [margin,                               (by - (margin * 2)) - holes_table_3 [1][1], (b3 [2] - holes_table_3 [1][2]) + 0.01],
-               [(margin *  2) + holes_table_3 [0][0], (by - (margin * 2)) - holes_table_3 [3][1], (b3 [2] - holes_table_3 [3][2]) + 0.01],
+loc_table_3 = [[margin,                              margin * 2,                                 (b3 [2] - holes_table_3 [0][2]) + 0.01],
+               [(margin * 2) + holes_table_3 [0][0], margin * 2,                                 (b3 [2] - holes_table_3 [1][2]) + 0.01],
+               [margin,                              (by - (margin * 2)) - holes_table_3 [2][1], (b3 [2] - holes_table_3 [2][2]) + 0.01],
+               [(margin * 2) + holes_table_3 [0][0], (by - (margin * 2)) - holes_table_3 [3][1], (b3 [2] - holes_table_3 [3][2]) + 0.01],
               ];
 loc_table   = [loc_table_1, loc_table_2, loc_table_3];
 
@@ -66,7 +66,7 @@ difference () {
       translate (xpos_table [x])
         roundedcube (cube_table [x], radius = in2mm (0.125), apply_to = "zmax");
 
-    union () {
+  union () {
     for (x = [0 : len (xpos_table) - 1]) {
       translate (xpos_table [x]) {
         for (i = [0 : len (holes_table [x]) - 1]) {
