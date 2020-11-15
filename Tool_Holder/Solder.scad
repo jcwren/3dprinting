@@ -14,7 +14,7 @@ $fn     = 360;
 margin  = in2mm (0.25);  // Minimum distance from hole to edge of box
 
 alcohol  = [in2mm (2.125), in2mm (2.125), in2mm (0.75), false];
-flux     = [in2mm (1.000), in2mm (1.000), in2mm (0.75), true];
+flux     = [in2mm (1.040), in2mm (1.040), in2mm (0.75), true];
 selecta  = [in2mm (0.400), in2mm (0.200), in2mm (1.50), false];
 xcelite  = [in2mm (0.400), in2mm (0.200), in2mm (1.50), false];
 pinch    = [in2mm (0.300), in2mm (0.120), in2mm (1.50), false];
@@ -52,7 +52,7 @@ loc_table_2 = [[margin,                              margin * 2,                
               ];
 loc_table_3 = [[margin,                              margin * 2,                                 (b3 [2] - holes_table_3 [0][2]) + 0.01],
                [(margin * 2) + holes_table_3 [0][0], margin * 2,                                 (b3 [2] - holes_table_3 [1][2]) + 0.01],
-               [margin,                              (by - (margin * 2)) - holes_table_3 [2][1], (b3 [2] - holes_table_3 [2][2]) + 0.01],
+               [margin + in2mm (0.10),               (by - (margin * 2)) - in2mm (0.20),         (b3 [2] - holes_table_3 [2][2]) + 0.01],
                [(margin * 2) + holes_table_3 [0][0], (by - (margin * 2)) - holes_table_3 [3][1], (b3 [2] - holes_table_3 [3][2]) + 0.01],
               ];
 loc_table   = [loc_table_1, loc_table_2, loc_table_3];
