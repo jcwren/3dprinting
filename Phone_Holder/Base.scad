@@ -10,7 +10,7 @@ rear_rad =   1.6;
 hole_x   =  26.0;
 hole_y   =   3.4;
 hole_z   =  40.0;
-hole_rot = 360.0 - 35.0;
+hole_rot = 360.0 - 30.0;
 hole_ang =   0.0;
 
 top_left  = -top_w / 2;
@@ -53,6 +53,9 @@ module base () {
     rotate (a = [0, 0, hole_rot])
       translate ([-hole_x / 2, -hole_y / 2, height - hole_z])
         cube ([hole_x, hole_y, hole_z + 0.01]);
+    translate ([-5, -16, height - 20])
+      rotate (a = [0, 290, 90])
+        cube ([30, 12.5, 10]);
   }
 }
 

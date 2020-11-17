@@ -1,6 +1,6 @@
 $fn            = 180;
 
-case_width     = 83.0;
+case_width     = 82.5;
 case_thickness = 11.0;
 case_height    = 75.0;
 case_wall      =  2.0;
