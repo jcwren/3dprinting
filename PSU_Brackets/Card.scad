@@ -10,7 +10,7 @@ module screw (x, y)
 
 translate ([-6, 0, 0]) {
   difference () {
-    
+
     // Floor
     cube ([12, 25, 5]);
 
@@ -18,8 +18,8 @@ translate ([-6, 0, 0]) {
     translate ([5, 0, 1]) {
       cube ([2, 6.5, 4]);
     }
-    
+
     //  Screw hole & head recess
     screw (6, 15);
-  } 
+  }
 }

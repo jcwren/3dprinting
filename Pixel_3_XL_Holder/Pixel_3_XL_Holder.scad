@@ -71,7 +71,7 @@ module phone_holder () {
 
 union () {
   phone_holder ();
-  
+
   translate ([-7, -7, 0])
     cube ([14, 14 +  (h_walls * 2) + p_thick, 0.5]);
   translate ([((h_walls * 2) + p_width) - 7, -7, 0])

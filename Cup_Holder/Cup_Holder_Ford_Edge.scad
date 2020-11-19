@@ -6,7 +6,7 @@ tab_height =  3.0;  // Height of anti-wobble tabs
 
 difference () {
   union () {
-    translate ([0, 0, 0]) 
+    translate ([0, 0, 0])
       cylinder (h=height, d=ears_dia, $fn=360);
     translate ([0, 0, tab_height / 2]) {
       cube ([10, holder_dia, tab_height], center = true);

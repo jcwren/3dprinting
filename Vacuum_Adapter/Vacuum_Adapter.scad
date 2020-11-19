@@ -22,7 +22,7 @@ module small_ports () {
 }
 
 module plate_with_holes () {
-  difference () {   
+  difference () {
     hull () {
       translate ([-40, 0, 0])
         cylinder (h=5, d=57 + wall, $fn=sides);
@@ -32,12 +32,12 @@ module plate_with_holes () {
     translate ([40, 0, 0])
       cylinder (h=5, d=57, $fn=sides);
     translate ([-40, 0, 0])
-      cylinder (h=5, d=57, $fn=sides);   
+      cylinder (h=5, d=57, $fn=sides);
   }
 }
 
 module plate_without_holes () {
-  difference () {   
+  difference () {
     hull () {
       translate ([-40, 0, 0])
         cylinder (h=5, d=57 + (wall * 2), $fn=sides);
@@ -55,7 +55,7 @@ module plate_without_holes () {
 
 module reducer_ex (big_hole, little_hole) {
   hull () {
-    translate ([0, 0, 0]) 
+    translate ([0, 0, 0])
       cylinder (h=1, d=big_hole, $fn=sides);
     translate ([0, 0, 24]) {
       translate ([-40, 0, 0])
@@ -74,7 +74,7 @@ module reducer () {
 }
 
 module large_port () {
-  neck (90, 92.6); 
+  neck (90, 92.6);
 }
 
 module bottom_half () {

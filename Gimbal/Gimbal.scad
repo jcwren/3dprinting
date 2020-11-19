@@ -36,7 +36,7 @@ module pivot_holes (od, phd, wh) {
 
 module pivot_pin (od, ppd, wh, pl, rs) {
   zrot = (od > 0) ? 0 : 180;
-  
+
   translate ([(od / 2) - 0.01, 0, wh / 2]) {
     rotate ([0, 90, zrot])
       cylinder (d = ppd, h = pl, $fn = sides);
@@ -51,8 +51,8 @@ module pivot_pins (od, ppd, wh, pl, rs) {
 }
 
 module torus2 (r1, r2) {
-  rotate_extrude () 
-    translate ([r1, 0, 0]) 
+  rotate_extrude ()
+    translate ([r1, 0, 0])
       circle (r2, $fn = sides);
 }
 
@@ -70,6 +70,6 @@ union () {
     if (ring_number != 1)
       pivot_holes (ring_outer_dia, pivot_hole_dia, wall_height);
   }
-  
+
   pivot_pins (ring_outer_dia, pivot_pin_dia, wall_height, pivot_length, ring_space);
-}  
+}

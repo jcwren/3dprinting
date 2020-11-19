@@ -68,29 +68,29 @@ difference() {
     translate([-TotalLength/2,0,0]) {
       cube([TotalLength,BackThickness,Height]);
       cube([TotalLength, DepthLessAngle, ArmThickness]);
-      translate([0,DepthLessAngle]) rotate([AngleDegrees,0,0]) 
+      translate([0,DepthLessAngle]) rotate([AngleDegrees,0,0])
         cube([TotalLength, AngledLength, ArmThickness]);
     }
     translate([0,BackThickness-err,ArmThickness-err]) insidefillet(FilletRadius, TotalLength);
   }
-  translate([TotalLength / 2 - HoleInset, 0, Height - HoleInset]) rotate([90,0,90]) 
+  translate([TotalLength / 2 - HoleInset, 0, Height - HoleInset]) rotate([90,0,90])
     outsidefillet(HoleInset, BackThickness + err);
-  translate([-TotalLength / 2 + HoleInset, 0, Height - HoleInset]) rotate([0,0,90]) 
+  translate([-TotalLength / 2 + HoleInset, 0, Height - HoleInset]) rotate([0,0,90])
     outsidefillet(HoleInset, BackThickness + err);
-  
+
   totalBoltDistance = TotalLength - HoleInset * 2;
   for (offset = [0: totalBoltDistance / (BoltCount - 1): totalBoltDistance]) {
     if (HoleStyle == 2)
-      translate([-TotalLength / 2 + HoleInset + offset, 0, Height - HoleInset]) rotate([-90,0,0]) 
+      translate([-TotalLength / 2 + HoleInset + offset, 0, Height - HoleInset]) rotate([-90,0,0])
         KeyHole(BoltHeadDiameter, BoltDiameter, BackThickness+FilletRadius*2);
     else if (HoleStyle == 1)
-      translate([-TotalLength / 2 + HoleInset + offset, -err, Height - HoleInset]) rotate([-90,0,0]) 
+      translate([-TotalLength / 2 + HoleInset + offset, -err, Height - HoleInset]) rotate([-90,0,0])
         cylinder(h = BackThickness + err * 2, d = BoltDiameter);
   }
-  
+
   for(i = [1:SlotCount]) {
     translate([-TotalLength / 2 + ArmWidth + (i-1) * (ArmWidth + SlotWidth), BackThickness + FilletRadius + SlotWidth / 2, -err])
-    union() {  
+    union() {
       translate([SlotWidth/2, 0, 0]) cylinder(h = ArmThickness + AngledLength + err*2, d = SlotWidth);
       cube([SlotWidth, Depth, ArmThickness + AngledLength + err*2]);
     }

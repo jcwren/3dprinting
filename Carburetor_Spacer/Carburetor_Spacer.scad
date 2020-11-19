@@ -14,11 +14,11 @@ gasket_radius = gasket_dia / 2;
 
 module outline () {
   hull () {
-    translate ([0 + (stud_c_to_c / 2), 0, 0]) 
+    translate ([0 + (stud_c_to_c / 2), 0, 0])
       cylinder (h=thickness, r=stud_radius+stud_wall, $fn=sides);
-    translate ([0 - (stud_c_to_c / 2), 0, 0]) 
+    translate ([0 - (stud_c_to_c / 2), 0, 0])
       cylinder (h=thickness, r=stud_radius+stud_wall, $fn=sides);
-    translate ([0, 0, 0]) 
+    translate ([0, 0, 0])
       cylinder (h=thickness, r=gasket_radius, $fn=sides);
   }
 }
@@ -50,5 +50,5 @@ module gasket () {
     cutout (-22.5);
   }
 }
-  
+
 gasket ();

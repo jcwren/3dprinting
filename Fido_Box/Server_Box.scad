@@ -41,7 +41,7 @@ pillar_diameter = 3;
 
 module shell () {
   difference () {
-    cube ([exterior_width, 
+    cube ([exterior_width,
            exterior_length,
            exterior_height]);
     translate ([shell_side_thickness, shell_end_top_thickness, -0.1])
@@ -76,13 +76,13 @@ module dh11_shield ()
       cube ([dh11_width + 2,
              dh11_length + 2,
              dh11_shield_height]);
-    
+
     translate ([dh11_x_offset + shell_side_thickness,
                 dh11_y_offset + shell_end_top_thickness,
                 interior_height - (dh11_shield_height + 0.1)])
       cube ([dh11_width,
              dh11_length,
-             dh11_shield_height + 0.2]); 
+             dh11_shield_height + 0.2]);
   }
 }
 
@@ -92,7 +92,7 @@ module round_hole (x, y, z, d)
               y + shell_end_top_thickness + 0.1,
               z])
     rotate ([90, 0, 0])
-      cylinder (d = d, 
+      cylinder (d = d,
                 h = shell_end_top_thickness + 0.2,
                 $fn = sides);
 }
@@ -107,13 +107,13 @@ module square_hole (x, y, z, w, h)
 
 module pillar (x, y)
 {
-  translate ([x - (pillar_diameter / 2), 
-              y - (pillar_diameter / 2), 
+  translate ([x - (pillar_diameter / 2),
+              y - (pillar_diameter / 2),
               shell_top_thickness + (interior_height - 19)])
     cube ([pillar_diameter, pillar_diameter, 19]);
 }
 
-module box () 
+module box ()
 {
   difference () {
     shell ();
@@ -122,7 +122,7 @@ module box ()
     round_hole (antenna_x_offset, antenna_y_offset, antenna_z_offset, antenna_diameter);
     round_hole (pb_x_offset, pb_y_offset, pb_z_offset, pb_diameter);
   }
-  
+
   dh11_shield ();
   pillar (3 + shell_side_thickness, 3 + shell_end_top_thickness);
   pillar ((interior_width - 3) + shell_side_thickness, 3 + shell_end_top_thickness);
@@ -133,19 +133,19 @@ module box ()
 module cover ()
 {
   cube ([exterior_width, exterior_length, shell_bottom_thickness]);
-  
+
   difference () {
-    translate ([shell_side_thickness, 
-                shell_side_thickness, 
+    translate ([shell_side_thickness,
+                shell_side_thickness,
                 shell_bottom_thickness])
-      cube ([interior_width, 
-             interior_length, 
+      cube ([interior_width,
+             interior_length,
              4]);
-    translate ([shell_side_thickness * 2, 
-                shell_side_thickness + shell_end_top_thickness, 
+    translate ([shell_side_thickness * 2,
+                shell_side_thickness + shell_end_top_thickness,
                 shell_bottom_thickness])
-      cube ([interior_width - (shell_side_thickness * 2), 
-             interior_length - (shell_side_thickness + shell_end_top_thickness), 
+      cube ([interior_width - (shell_side_thickness * 2),
+             interior_length - (shell_side_thickness + shell_end_top_thickness),
              4.1]);
   }
 }
@@ -159,4 +159,4 @@ translate ([80, 0, ])
 translate ([exterior_width - 0.1, 0, 0])
   cube ([(80 - exterior_width) + 0.2, 0.01, 0.01]);
 
-  
+

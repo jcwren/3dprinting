@@ -7,7 +7,7 @@ rotate ([0, 90, 0]) {
   linear_extrude (shaftLen) {
     difference () {
       circle (d = shaftDia);
-      
+
       translate ([flatOffset, -(shaftDia / 2), 0])
         square ([shaftDia, shaftDia]);
     }

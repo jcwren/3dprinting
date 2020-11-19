@@ -20,13 +20,13 @@ bar_length  = (bar_margin * 2) + ((max_leds - 1) * bar_spacing);
 module bar (is3LEDs) {
   difference () {
     cube ([bar_length, bar_width, bar_height]);
-    
+
     for (i = [0 : (leds - 1)]) {
       translate ([bar_margin + (i * bar_spacing), bar_width / 2, -0.01]) {
         cylinder (d = led_dia, h = bar_height + 0.02, $fn = sides);
         cylinder (d = led_base, h = led_flange, $fn = sides);
       }
-      
+
       translate ([bar_margin + (i * bar_spacing), bar_width / 2, bar_height - 1]) {
         cylinder (d1 = led_dia, d2 = led_dia + 1.5, h = 1.01, $fn = sides);
       }
@@ -34,7 +34,7 @@ module bar (is3LEDs) {
     if (is3LEDs) {
       screw_dia  =  5.25;
       screw_hgt  =  2.20;
-      
+
       translate ([9.00, bar_width + 0.80, -0.01])
         cylinder (d = screw_dia, h = screw_hgt, $fn = sides);
     }

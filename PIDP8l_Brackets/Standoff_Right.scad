@@ -29,7 +29,7 @@ module other_cutouts () {
   bar_width  = 5.00;
   bar_space  = ((ctc - (edge * 2)) - (bars * bar_width)) / 4;
   bar_height = 5.00 + 2.00;
-  
+
   translate ([edge * 2, -0.01, bar_height])
     cube ([bar_space, width + 0.02, height - (bar_height * 2)]);
   translate ([(edge * 2) + ((bar_space + bar_width) * 1), -0.01, bar_height])

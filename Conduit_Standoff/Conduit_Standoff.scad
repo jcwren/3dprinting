@@ -30,6 +30,6 @@ difference () {
     convexity = 10
   );
   */
-  translate ([standoff + (dia / 2), dia / 2, -0.1]) 
+  translate ([standoff + (dia / 2), dia / 2, -0.1])
     cylinder (h = height + 0.2, d = dia, $fn = 360);
 }

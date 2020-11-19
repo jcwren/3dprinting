@@ -66,7 +66,7 @@ difference () {
           circle (r = in2mm (corner_radius));
         translate ([in2mm (-((stud_center - tab_edge_left) - corner_radius)), in2mm (-((washer_rad * 2) - corner_radius)), in2mm (0)])
           circle (r = in2mm (corner_radius));
-      }  
+      }
     }
     //
     //  Tab

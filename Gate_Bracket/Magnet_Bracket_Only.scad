@@ -4,12 +4,12 @@ adjust=5;
 module tiewrap (y=6, h=10, w=40) {
   tw_width=5.3;
   tw_thickness=1.6;
-  
+
   translate ([w / 2, y, h - 3]) {
     difference () {
       cylinder (r=((w + 2) / 2) + tw_thickness, h=tw_width, $fn=sides);
       cylinder (r=((w + 2) / 2), h=tw_width, $fn=sides);
-    }  
+    }
   }
 }
 
@@ -28,18 +28,18 @@ module bracket (x=0, y=0) {
 
       tiewrap ();
       index_pin ();
-      
+
       translate ([20, 6, -1]) {
         cylinder (d=33.75, h=22, $fn=sides);
       }
-      
+
       //
       //  Bottom-side cutout
       //
       translate ([-1, 45 - adjust, 9.5]) {
         cube ([42, 45, 15]);
       }
-      
+
       //
       //  Left-side angled cutout
       //
@@ -48,7 +48,7 @@ module bracket (x=0, y=0) {
           cube ([40, 20, 22]);
         }
       }
-      
+
       //
       //  Right-side angled cutout
       //
@@ -63,7 +63,7 @@ module bracket (x=0, y=0) {
 
 module magnet_slot () {
   slot_height=2;
-  
+
   translate ([20, 55 - adjust, (9.5 - slot_height) / 2]) {
     cylinder (d=10, h=slot_height, $fn=sides);
   }

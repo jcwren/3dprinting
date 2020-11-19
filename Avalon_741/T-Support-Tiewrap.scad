@@ -22,7 +22,7 @@ translate ([0, 0, 0]) {
     translate ([0, 0, 7]) {
       cube ([30, 20, 27]);
     }
-    
+
     // Tie-wrap
     translate ([10.25, 0, 0]) {
       cube ([9.5, 27, 2.75]);
@@ -37,11 +37,11 @@ translate ([0, 0, 0]) {
       }
     }
     */
-    
+
     //  Screw holes & head recesses
     screw (6, 10);
     screw (24, 10);
-  } 
+  }
 }
 
-  
+

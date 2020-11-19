@@ -90,7 +90,7 @@ module carb_base () {
 }
 
 module cable_bracket_reinforcement () {
-  polygon ([[in2mm (0.0), in2mm (1.0)], 
+  polygon ([[in2mm (0.0), in2mm (1.0)],
             [in2mm (0.0), in2mm (4.45)],
             [in2mm (-3.45), in2mm (4.45)]]);
 }

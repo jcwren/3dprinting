@@ -27,7 +27,7 @@ difference () {
       cylinder (h=3, d1=100, d2=103, $fn=sides);
     }
   }
-  
+
   //
   //  Make interior hollow
   //
@@ -40,7 +40,7 @@ difference () {
   translate ([60, 60, 30]) {
     cylinder (h=20, d=98, $fn=sides);
   }
-  
+
   //
   //  Screw holes
   //

@@ -10,10 +10,10 @@ translate ([-16, 0, 0]) {
     translate ([0, 27, 7]) {
       cube ([32, 20, 27]);
     }
-    
+
     // Tie-wrap
     translate ([7.5, 0, 0]) {
       cube ([17, 47, 3]);
     }
-  } 
+  }
 }

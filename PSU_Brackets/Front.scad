@@ -15,7 +15,7 @@ module screw (x, y)
 
 translate ([-24.5, -5, 0]) {
   difference () {
-    
+
     // Floor
     cube ([49, 25, 10]);
 
@@ -23,7 +23,7 @@ translate ([-24.5, -5, 0]) {
     translate ([5, 5, 6]) {
       cube ([39, 20, 4]);
     }
-    
+
     // Connector cutout
     translate ([28.5, 0, 6]) {
       cube ([13, 5, 4]);
@@ -31,14 +31,14 @@ translate ([-24.5, -5, 0]) {
     translate ([28.5, 0, 5]) {
       cube ([13, 2, 1]);
     }
-    
+
     //  Screw hole & head recess
     screw (11, 15);
     screw (38, 15);
-    
+
     // Tie-wrap slot
     translate ([0, 7, 0]) {
       cube ([49, 4.7, 1.8]);
     }
-  } 
+  }
 }

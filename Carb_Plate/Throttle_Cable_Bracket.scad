@@ -12,10 +12,10 @@ hole_d = in2mm (frac (5, 16));
 
 difference () {
   cube ([cube_w, cube_d, cube_h]);
-  
+
   translate ([-0.01, -0.01, cube_wall])
     cube ([cube_w + 0.02, cube_d - cube_wall, (cube_h - cube_wall) + 0.02]);
-  
+
   translate ([cube_w / 2, (cube_d - cube_wall) / 2, -0.01])
     cylinder (d = hole_d, h = cube_wall + 0.02);
 }

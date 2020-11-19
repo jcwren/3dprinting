@@ -23,14 +23,14 @@ module relief_cutouts () {
     translate ([(ctc *  i) + (edge * 2), -0.01, height - relief])
       cube ([ctc - (edge * 2), width + 0.02, relief + 0.01]);
     translate ([(ctc * i) + (edge * 2), -0.01, -0.01])
-      cube ([ctc - (edge * 2), width + 0.02, relief + 0.01]);  
+      cube ([ctc - (edge * 2), width + 0.02, relief + 0.01]);
   }
 }
 
 module other_cutouts () {
   for (i = [0:(posts - 2)])
     translate ([(ctc * i) + (edge * 2), -0.01, bar_height + relief])
-      cube ([ctc - (edge * 2), width + 0.02, height - ((bar_height + relief) * 2)]); 
+      cube ([ctc - (edge * 2), width + 0.02, height - ((bar_height + relief) * 2)]);
 }
 
 difference () {

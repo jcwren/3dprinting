@@ -27,7 +27,7 @@ module body () {
 
 module pcb_cutout () {
   extra_z = (adapter_height - pcb_height) + batt_voffset + batt_height;
-  
+
   translate ([0, 0, -0.01]) {
     translate ([-(pcb_width / 2), -(pcb_thickness / 2), adapter_height - pcb_height])
       cube ([pcb_width, pcb_thickness, pcb_height + stop_height + 0.02]);

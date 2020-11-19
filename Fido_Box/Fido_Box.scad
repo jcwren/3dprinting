@@ -42,7 +42,7 @@ usb_z_offset = (interior_height - usb_height) - 1;
 
 module shell () {
   difference () {
-    cube ([exterior_width, 
+    cube ([exterior_width,
            exterior_length,
            exterior_height]);
     translate ([shell_side_thickness, shell_side_thickness, -0.1])
@@ -66,7 +66,7 @@ module round_hole (x, y, z, d)
               y + shell_side_thickness + 0.1,
               z])
     rotate ([90, 0, 0])
-      cylinder (d = d, 
+      cylinder (d = d,
                 h = shell_side_thickness + 0.2,
                 $fn = sides);
 }
@@ -79,7 +79,7 @@ module square_hole (x, y, z, w, h)
     cube ([w, shell_side_thickness + 0.2, h]);
 }
 
-module box () 
+module box ()
 {
   difference () {
     shell ();
@@ -90,8 +90,8 @@ module box ()
     square_hole (usb_x_offset, usb_y_offset, usb_z_offset, usb_width, usb_height);
   }
 
-  translate ([usb_x_offset + shell_side_thickness, 
-              (usb_y_offset - 5) - shell_side_thickness, 
+  translate ([usb_x_offset + shell_side_thickness,
+              (usb_y_offset - 5) - shell_side_thickness,
               interior_height - 0.3])
     cube ([usb_width, 4, 0.3]);
 }
@@ -99,22 +99,22 @@ module box ()
 module cover ()
 {
   cube ([exterior_width, exterior_length, shell_bottom_thickness]);
-  
+
   difference () {
-    translate ([shell_side_thickness, 
-                shell_side_thickness, 
+    translate ([shell_side_thickness,
+                shell_side_thickness,
                 shell_bottom_thickness])
-      cube ([interior_width, 
-             interior_length, 
+      cube ([interior_width,
+             interior_length,
              4]);
-    translate ([shell_side_thickness * 2, 
-                shell_side_thickness * 2, 
+    translate ([shell_side_thickness * 2,
+                shell_side_thickness * 2,
                 shell_bottom_thickness])
-      cube ([interior_width - (shell_side_thickness * 2), 
-             interior_length - (shell_side_thickness * 2), 
+      cube ([interior_width - (shell_side_thickness * 2),
+             interior_length - (shell_side_thickness * 2),
              4.1]);
-    translate ([shell_side_thickness * 2, 
-                shell_side_thickness - 0.1, 
+    translate ([shell_side_thickness * 2,
+                shell_side_thickness - 0.1,
                 shell_bottom_thickness + 2])
       cube ([interior_width - (shell_side_thickness * 2),
              shell_side_thickness + 0.2,
@@ -129,4 +129,4 @@ translate ([50, 0, ])
   cover ();
 translate ([exterior_width - 0.1, 0, 0])
   cube ([(50 - exterior_width) + 0.2, 0.01, 0.01]);
-  
+

@@ -46,7 +46,7 @@ module roundedcube(size = [1, 1, 1], center = false, radius = 0.5, apply_to = "a
             ) {
               build_point("sphere");
             } else {
-              rotate = 
+              rotate =
                 (apply_to == "xmin" || apply_to == "xmax" || apply_to == "x") ? [0, 90, 0] : (
                 (apply_to == "ymin" || apply_to == "ymax" || apply_to == "y") ? [90, 90, 0] :
                 [0, 0, 0]
