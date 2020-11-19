@@ -53,7 +53,7 @@ module base () {
     rotate (a = [0, 0, hole_rot])
       translate ([-hole_x / 2, -hole_y / 2, height - hole_z])
         cube ([hole_x, hole_y, hole_z + 0.01]);
-    translate ([-5, -16, height - 20])
+    translate ([-2.55, -16, height - 20])
       rotate (a = [0, 290, 90])
         cube ([30, 12.5, 10]);
   }
