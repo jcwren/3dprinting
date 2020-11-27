@@ -31,7 +31,7 @@
  *      Generates an NPT thread of 1 degree 47 second taper.
  *
  * X=prof(A,MIN,MAX)
- *      Generates a truncated thread profile.  A is angle in degrees, 
+ *      Generates a truncated thread profile.  A is angle in degrees,
  *      MIN and MAX are positive numbers denoting distance above and
  *      below centerline in pitch units.  i.e. prof(29,0.25, 0.25) is ACME.
  *
@@ -96,11 +96,11 @@ module print_npt() {
         /* 1/2" NPT.  Tested. */
         difference() {
             union() {
-                translate([0,0,15/64]) 
+                translate([0,0,15/64])
                 thread_npt(DMAJ=0.840+$OD_COMP, PITCH=0.07143, L=0.07143*8);
                 cylinder(d=flat(), h=1/4, $fn=6);
             }
-            
+
             translate([0,0,1/4-1/64]) cylinder(d=5/8, h=2);
         }
 
@@ -140,7 +140,7 @@ module print_npt() {
                 cylinder(d=flat()*(2+1/16), h=1/4, $fn=6);
                 translate([0,0,15/64]) thread_npt(DMAJ=1.900+$OD_COMP, PITCH=1/11.5, L=8/11.5);
             }
-            
+
             translate([0,0,-1/64]) thread_npt(DMAJ=1.660+$ID_COMP, PITCH=1/11.5, L=8/11.5);
             translate([0,0,7.5/11.5]) cylinder(d=1.660-(1/16)*(8/11.5), h=1);
         }
@@ -155,11 +155,11 @@ module print_test() {
     // 1/2" NPT
     imperial() difference() {
         union() {
-            translate([0,0,15/64]) 
+            translate([0,0,15/64])
             thread_npt(DMAJ=0.840+$OD_COMP, PITCH=0.07143, L=0.07143*8);
             cylinder(d=flat()*1, h=1/4, $fn=6);
         }
-        
+
         cylinder(d=5/8, h=2, center=true);
     }
 
@@ -169,7 +169,7 @@ module print_test() {
             translate([0,0,1/16]) tsmthread(DMAJ=3/8+$OD_COMP, L=3/8, PITCH=1/32);
             cylinder(d=(3/16)+$ID_COMP, h=2, center=true);
         }
-        
+
         cylinder(d=(1/2)*flat()+$OD_COMP, h=(1/8), $fn=6);
     }
 
@@ -197,7 +197,7 @@ module print_test() {
 module visual_test() {
     $fs=1;
     $fa=1.5;
-    
+
 
     /* Visual test 1, compare thread profiles to cross-section of thread */
     translate([10,0]) for(X=[  ["ACME",[0,0],THREAD_ACME,2 ],
@@ -219,13 +219,13 @@ module visual_test() {
          *  but is actually 9mm when you measure the STL file.
          */
         color("lightgreen") projection(cut=true) rotate([90,0]) import("nut_8mm4start2mm.stl");
-        
+
         /**
          * An 8mm thread fitting in that object.  It "fits right", but
          * notice how only the tips are touching.
          */
         color("green") difference() {
-            projection(cut=true) rotate([90,0]) 
+            projection(cut=true) rotate([90,0])
                 translate([0,0,2+0.25])
                     tsmthread(DMAJ=8, L=5, PITCH=2, PR=THREAD_TRAP, STARTS=4);
             translate([-1.5,-3.5]) text("8mm",1);
@@ -244,17 +244,17 @@ module visual_test() {
             translate([-1.5,-11.5]) text("9mm",1);
             translate([-2,-13]) text("COMP",1);
         }
-                
-        
+
+
     }
 
     /* Visual test 4:  UTS metric threads, 20mm. */
     /* https://www.thingiverse.com/thing:25705 */
     translate([-30,8]) {
-        color("lightblue") 
+        color("lightblue")
             projection(cut=true) rotate([90,0]) import("Teil_1.stl");
 
-        projection(cut=true) rotate([90,0]) 
+        projection(cut=true) rotate([90,0])
             translate([0,0,-2.5]) rotate([0,0,-80]) tsmthread(20,20,2.5,STARTS=1);
     }
     // Visual test 5:  Torture test using all features at once.
@@ -265,7 +265,7 @@ module visual_test() {
 
 module show_profile(V=THREAD_ACME, title="ACME", l=4, s=1, TAPER=0) {
     ADD=(TAPER>0)?add_npt(TAPER):[1,0];
-    
+
     POLY=concat([[0,-1]],
         [for(N=[0:(len(V)*l)])
             [wrap(V,N,ADD)[0], 1+4*ADD[1]-wrap(V,N,ADD)[1]] ],
@@ -275,11 +275,11 @@ module show_profile(V=THREAD_ACME, title="ACME", l=4, s=1, TAPER=0) {
         translate([0.5,-0.75]) text(title,0.75);
     }
 
-    translate([4,-1]) /*projection(cut=true)*/ 
+    translate([4,-1]) /*projection(cut=true)*/
         rotate([0,90]) tsmthread(4,3,1,PR=V, STARTS=s, TAPER=TAPER, $fn=64);
 }
 
- 
+
  /**
  * Generates truncated, symmetrical thread profiles like UTS or ACME
  * A is pitch angle
@@ -443,7 +443,7 @@ module tsmthread(DMAJ=20    // Major diameter
         RING_MIN+SEG*len(PR) + minx(PR,X));
 
     SHOW=0;     // Debug value.  Offsets top and bottom to highlight any mesh flaws
-    
+
     /**
      * How this works:  Take PR to be the outside edge of a cylinder of radius DMAJ.
      * Generate points for 360 degrees.  N is angle along this circle, RING is height.
@@ -454,7 +454,7 @@ module tsmthread(DMAJ=20    // Major diameter
     function zoff(RING,N)=(wrap(PR, RING,ADD)[0] + STARTS*(N/POINTS));
     FLAT_B=zoff(len(PR)*STARTS,0);  // Z coordinates of bottom flat
     FLAT_T=zoff(RINGS-len(PR),0);   // Z coordinates of top flat
-   
+
     /**
      * Deliminate what spiral coordinates exist between the top and bottom flats.
      * Used for loops, so that only those polygons are joined and nothing outside it.
@@ -465,12 +465,12 @@ module tsmthread(DMAJ=20    // Major diameter
     // Fast-lookup arrays
     MIN=[for(N=[0:POINTS-1]) binsearch2(PR,FLAT_B - (N/POINTS)*STARTS)+1 ];
     MAX=[for(N=[0:POINTS-1]) binsearch2(PR,FLAT_T - (N/POINTS)*STARTS) ];
-        
+
     // Array-lookup wrappers which speed up ringmax/ringmin manyfold.
     // binsearch makes them fast enough to be tolerable, but still much better
     function ringmax(N)=MAX[N%POINTS];
     function ringmin(N)=MIN[N%POINTS];
-    
+
     /**
      * Difficult difficult lemon difficult.
      * Interpolate along the profile to find the points it cuts through
@@ -483,20 +483,20 @@ module tsmthread(DMAJ=20    // Major diameter
      */
     function radius_flat(RING,N)=
         TAPER_COMP+
-        (DMAJ/2)-PITCH*interpolate(PR,wrap(PR,len(PR)*STARTS+RING,ADD)[0] - 
+        (DMAJ/2)-PITCH*interpolate(PR,wrap(PR,len(PR)*STARTS+RING,ADD)[0] -
             // Modulous because this is all the same taper
             (STARTS*(N/POINTS))%1 - STARTS,ADD)
             // Of course we have to un-taper too, sigh
             -ADD[1]*STARTS*(((N/POINTS)*STARTS)%1);
     /**
-     * Radius is generated differently for the top&bottom faces than the spiral because 
+     * Radius is generated differently for the top&bottom faces than the spiral because
      * they exist in different coordinate spaces.  Also, the top&bottom faces must be
      * interpolated to fit.
      */
     function cap(RING,ZOFF=0,ROFF=0)=[
         for(N=[0:POINTS-1])
         let(P=N/POINTS, A=-360*P,R=radius_flat(RING,N)+ROFF)
-            traj(R,A,zoff(RING,0)+ZOFF) 
+            traj(R,A,zoff(RING,0)+ZOFF)
         ];
 
     /**
@@ -525,11 +525,11 @@ module tsmthread(DMAJ=20    // Major diameter
            4*POINTS,                   // 2 = main spiral
            2*POINTS,                   // 3 = stub top
            3*POINTS,                   // 4 = stub bottom
-           2*POINTS+POINTS*len(PR),    
-           2*POINTS+POINTS*len(PR) + 
+           2*POINTS+POINTS*len(PR),
+           2*POINTS+POINTS*len(PR) +
                 RINGS*POINTS
         ];
-    
+
     /**
      * This is it, this is where the magic happens.
      * Given a point in RING,N spiral coordinates, this decides whether it
@@ -545,7 +545,7 @@ module tsmthread(DMAJ=20    // Major diameter
     // Like above but takes a vector to transform into a triangle
     function pointv(V)=[ for(N=V) point(N[0],N[1]) ];
 
-    
+
     /**
      * List of points, organized in sections.
      * 0 - RINGS-1          Bottom cap
@@ -563,7 +563,7 @@ module tsmthread(DMAJ=20    // Major diameter
         [ for(N=[0:POINTS-1]) let(R=(DMAJ/2)-(STUB_OFF*PITCH)) traj(R,-360*(N/POINTS),
            -STUB) ],
         //cap(len(PR)*STARTS, -STUB),
-    
+
         // Main spiral
         [ for(RING=[0:RINGS-1], N=[0:POINTS-1])
             let(A=-360*(N/POINTS),
@@ -610,7 +610,7 @@ module tsmthread(DMAJ=20    // Major diameter
             [ DATA[WELD[0]]+N, DATA[WELD[0]]+(N+1)%POINTS, DATA[WELD[1]]+(N+1)%POINTS ] ],
         [ if(STUB) for(WELD=[[0,3],[3,4]], N=[0:POINTS-1])
             [ DATA[WELD[1]]+N, DATA[WELD[0]]+N, DATA[WELD[1]]+(N+1)%POINTS ] ],
-        
+
         // Bottom flat
         [ [ for(N=[0:POINTS-1]) N+DATA[(STUB>0)?4:0] ] ],
         // top flat.  Note reverse direction to mirror the normal.
@@ -655,7 +655,7 @@ THREAD_TRAP=let(H=0.5/2) prof(30,H,H);
 THREAD_EXTERNAL_SQUARE=[ [0,0], [0.25+.1,0], [0.25+.1,0.5],[0.75+.1,0.5],[0.75+.1,0]];
 
 // Just for the hell of it, buttress threads.
-function prof_butt(A,FLAT)=let(M=tan(A)) 
+function prof_butt(A,FLAT)=let(M=tan(A))
     [ [0,0],[FLAT,0],[FLAT,M*(1-(2*FLAT))], [2*FLAT,M*(1-(2*FLAT))] ];
 
 THREAD_BUTT=prof_butt(30,0.2);
@@ -665,7 +665,7 @@ THREAD_BALL=concat([ [0,0] ],
 // Designed for 4.5mm balls used at a 6mm pitch
     [ for(A=[0:12.857:180]) let(R=(4.5+0.25)/(6*2)) R*[ -cos(A),sin(A) ]+[0.5,0]
     // implied
-    // , [ 1,0 ] 
+    // , [ 1,0 ]
         ] );
 
 /******************************************************************************/
@@ -711,7 +711,7 @@ function add_npt(TAPER)=[1,tan(TAPER)]; // Why so easy? tan(ANGLE) is the slope 
  * via adding [1,M] per wraparound.
  */
 function prof_npt(TAPER=30, H1=0.8/2, H2=0.8/2) =
-    let(M=tan(TAPER), PR2=delta(prof(60,H1,H2))) 
+    let(M=tan(TAPER), PR2=delta(prof(60,H1,H2)))
     integ([
             [0,0],  // Replace origin deleted by delta()
             PR2[0], // bottom flat, OK
@@ -752,7 +752,7 @@ module npt_profile_test(TAPER=15, W=3) translate([1/8,2/3]) {
         translate(-[0.75,1]*0.25) text("60",0.25);
     }
 
-    echo("Input angle",TAPER,"Measured Angle", 
+    echo("Input angle",TAPER,"Measured Angle",
         atan((interpolate(PR,2,ADD) - interpolate(PR,0,ADD))/2),"Diff",
         TAPER-atan((interpolate(PR,2,ADD) - interpolate(PR,0,ADD))/2)
     );
@@ -773,7 +773,7 @@ function flat(N=6)=1/cos(180/N);
  *  imperial() cylinder(d=1, h=1); renders a satisfying number of facets
  *  instead of freaking 5.
  */
-module imperial(F=25.4) { 
+module imperial(F=25.4) {
     // modified $... values will be seen by children
     $fs     =$fs     /F;
     $OD_COMP=$OD_COMP/F;
@@ -809,7 +809,7 @@ module taper(d=1,h=1,off=0,r=0, center=false, in=false) {
                 translate([0,0,h/2-d/2-off]) cylinder(d1=0, d2=d*2, h=d, $fn=points_r(d/2));
             }
         }
-        else intersection() { 
+        else intersection() {
             children();
             translate(center?[0,0,0]:[0,0,h/2]) scale(h+d-off) polyhedron(
                 concat( [ for(N=[0:U-1]) 0.5*[cos((N*360)/U),sin((N*360)/U),0] ],
