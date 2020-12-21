@@ -10,7 +10,7 @@ Notes: Print at 15% infill
 ## Temperature Tower
 Filename: `Temperature_Tower_PETG.gcode`
 
-From: https://www.prusaprinters.org/prints/39810-all-in-one-temperature-and-bridging-tower-high-to-/files
+From: https://www.prusaprinters.org/prints/39810-all-in-one-temperature-and-bridging-tower-high-to-
 
 Notes: (none)
 
