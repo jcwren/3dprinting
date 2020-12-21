@@ -7,6 +7,13 @@ From: https://www.thingiverse.com/thing:1545913
 
 Notes: Print at 15% infill
 
+## Prusa Precision Extruder Calibration Cube
+Filename: `Prusa_40-40-40_Thin_Wall_Cube.stl`
+
+From: https://help.prusa3d.com/en/article/extrusion-multiplier-calibration_2257
+
+Notes: Set Vase mode, desired layer height in PrusaSlicer
+
 ## Temperature Tower
 Filename: `Temperature_Tower_PETG.gcode`
 
