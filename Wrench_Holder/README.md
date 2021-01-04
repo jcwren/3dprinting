@@ -12,7 +12,7 @@
 * 1/4"
 
 `Wrench_Holder_2.scad` is for the English pipe wrenches with the following sizes:
-* 5/8" - 11/16"
+* 11/16" - 5/8"
 * 9/16" - 1/2"
 * 7/16" - 3/8"
 

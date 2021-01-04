@@ -1,33 +1,35 @@
-width = [10, 10,  8,  8,  8,  7,  6, 5.5, 5.5,  5,  5];
-space = [12, 12, 11, 11, 10, 10,  9,   9,   9,  8,  8];
-vrtcl = [ 0,  0,  1,  1,  1,  2,  3,   3,   3,  4,  4];
+widths        = [  8.77,  8.75,  7.91,  7.61,  6.85,  4.53,  4.00,  3.75,  3.31,  3.22,  2.85];
+spacing       = [ 11,    11,    11,    11,     9,     9,     8,     8,     8,     7,     7];
+pocket_depth  = [ 12,    11,    10,     9,     8,     7,     6,     5,     4,     4,     4];
+imprint_width = [111,   109,    98,    87,    77,    66,    55,    55,    55,    55,    55];
+
+base_width  = 75.0;
+rail_width  =  3.0;
+rail_height = 22.0;
 
 function sum (v, i = 0, r = 0) = i < len (v) ? sum (v, i + 1, r + v [i]) : r;
-function reverse (list) = [for (i = [len (list) - 1: -1 : 0]) list [i]];
 function subarray (list, begin = 0, end = -1) = [
   let (end = end < 0 ? len (list) : end)
     for (i = [begin : 1 : end - 1])
       list [i]
 ];
 
-rwidth = reverse (width);
-rspace = reverse (space);
-
-module base () {
-  translate ([0, 0, 0])
-    cube ([195, 70, 2]);
-  translate ([0, 0, 0])
-    cube ([195, 5, 20]);
-  translate ([0, 65, 0])
-    cube ([195, 5, 20]);
-}
+length = sum (widths) + sum (spacing) + 10;
 
 difference () {
-  base ();
+  union () {
+    for (i = [0 : 3]) 
+      translate ([i == 0 ? 0 : ((length / 3) * i) - (i == 3 ? 8 : 4), 0, 0])
+        cube ([8, base_width, 1.5]);
+    translate ([0, 0, 0])
+      cube ([length, rail_width, rail_height]);
+    translate ([0, base_width - rail_width, 0])
+      cube ([length, rail_width, rail_height]);
+  }
 
-  for (i = [0 : len (width) - 1]) {
-    translate ([15 + sum (subarray (space, 0, i)) + sum (subarray (width, 0, i)), -0.01, 8 + vrtcl [i]])
+  for (i = [0 : len (widths) - 1]) {
+    translate ([15 + sum (subarray (spacing, 0, i)) + sum (subarray (widths, 0, i)), -0.01, rail_height - pocket_depth [i]])
       rotate ([0, 315, 0])
-        cube ([width [i], 70.02, 25]);
+        cube ([widths [i], base_width + 0.02, 25]);
   }
 }
