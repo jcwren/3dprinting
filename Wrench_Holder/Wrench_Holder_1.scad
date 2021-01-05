@@ -6,6 +6,7 @@ imprint_width = [111,   109,    98,    87,    77,    66,    55,    55,    55,   
 base_width  = 75.0;
 rail_width  =  3.0;
 rail_height = 25.0;
+cross_bars  =  4;
 
 function sum (v, i = 0, r = 0) = i < len (v) ? sum (v, i + 1, r + v [i]) : r;
 function subarray (list, begin = 0, end = -1) = [
@@ -18,8 +19,8 @@ length = sum (widths) + sum (spacing) + 13;
 
 difference () {
   union () {
-    for (i = [0 : 3])
-      translate ([i == 0 ? 0 : ((length / 3) * i) - (i == 3 ? 8 : 4), 0, 0])
+    for (i = [0 : cross_bars - 1])
+      translate ([i == 0 ? 0 : ((length / (cross_bars - 1)) * i) - (i == (cross_bars - 1) ? 8 : 4), 0, 0])
         cube ([8, base_width, 1.5]);
     translate ([0, 0, 0])
       cube ([length, rail_width, rail_height]);

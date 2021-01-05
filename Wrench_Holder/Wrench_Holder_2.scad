@@ -5,7 +5,7 @@ imprint_width = [ 85,    80,    70];
 
 base_width  = 65.0;
 rail_width  =  3.0;
-rail_height = 22.0;
+rail_height = 25.0;
 cross_bars  =  3;
 
 function sum (v, i = 0, r = 0) = i < len (v) ? sum (v, i + 1, r + v [i]) : r;
