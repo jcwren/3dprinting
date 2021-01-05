@@ -18,7 +18,7 @@ length = sum (widths) + sum (spacing) + 13;
 
 difference () {
   union () {
-    for (i = [0 : 3]) 
+    for (i = [0 : 3])
       translate ([i == 0 ? 0 : ((length / 3) * i) - (i == 3 ? 8 : 4), 0, 0])
         cube ([8, base_width, 1.5]);
     translate ([0, 0, 0])

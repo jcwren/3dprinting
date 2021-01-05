@@ -19,7 +19,7 @@ length = sum (widths) + sum (spacing) + 5;
 
 difference () {
   union () {
-    for (i = [0 : cross_bars - 1]) 
+    for (i = [0 : cross_bars - 1])
       translate ([i == 0 ? 0 : ((length / (cross_bars - 1)) * i) - (i == (cross_bars - 1) ? 8 : 4), 0, 0])
         cube ([8, base_width, 1.5]);
     translate ([0, 0, 0])
