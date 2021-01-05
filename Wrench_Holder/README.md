@@ -16,3 +16,12 @@
 * 9/16" - 1/2"
 * 7/16" - 3/8"
 
+'Wrench_Holder_3.scad` is for the following wrenches:
+* 11/16" x 2
+* 5/8" x 3
+* 9/16" x 1
+* 1/2" x 2
+* 7/16" x 2
+* 3/8" x 2
+* 5/16" x 1
+* 1/4" x 1
