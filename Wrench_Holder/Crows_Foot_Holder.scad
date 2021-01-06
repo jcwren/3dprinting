@@ -9,7 +9,7 @@ cube_y = 1;
 cube_h = 2;
 
 v = [
-  [infrac (1,  0, 16), 0.43, 0.82], // 1" 
+  [infrac (1,  0, 16), 0.43, 0.82], // 1"
   [infrac (0,  7,  8), 0.41, 0.72], // 7/8"
   [infrac (0, 13, 16), 0.37, 0.62], // 13/16"
   [infrac (0,  3,  4), 0.36, 0.60], // 3/4"
@@ -23,7 +23,7 @@ v = [
 
 for (i = [0 : len (v) - 1]) {
   translate (vin2mm ([-((v [i][cube_x] + 0.250) / 2), sum (v, i, cube_y) + (wall * i), 0])) {
-    cube (vin2mm ([v [i][cube_x] + 0.250, wall, 0.15 + v [i][cube_h] + 0.125])); 
+    cube (vin2mm ([v [i][cube_x] + 0.250, wall, 0.15 + v [i][cube_h] + 0.125]));
     translate (vin2mm ([0.125, wall, 0]))
       cube (vin2mm ([v [i][cube_x], v [i][cube_y], 0.15 + v [i][cube_h]]));
   }
