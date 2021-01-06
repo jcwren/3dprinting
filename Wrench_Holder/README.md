@@ -19,13 +19,13 @@ following sizes:
 * 5/16"
 * 1/4"
 
-`Wrench_Holder_2.scad` is for the Craftsman pipe wrenches with the following
+`Pipe_Wrench_Holder.scad` is for the Craftsman pipe wrenches with the following
 sizes:
 * 11/16" - 5/8"
 * 9/16" - 1/2"
 * 7/16" - 3/8"
 
-`Wrench_Holder_1.scad` is for the Craftsman open-end box wrenches with the
+`Wrench_Holder_2.scad` is for the Craftsman open-end box wrenches with the
 sizes below. These wrenches were different thicknesses than the first holder,
 and the sizes have been adjusted as necessary.
 * 11/16" x 2
@@ -36,3 +36,6 @@ and the sizes have been adjusted as necessary.
 * 3/8" x 2
 * 5/16" x 1
 * 1/4" x 1
+
+`Double_Rachet_Holder.scad` is for 4 double-ended box ratchet wrenches. The
+branch is unknown.
