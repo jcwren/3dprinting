@@ -11,8 +11,8 @@ function subarray (list, begin = 0, end = -1) = [
 ];
 
 sockets38_od = [f0(100), f0(100), f0(100), f0(100), f0(60), f0(60), f0(60)];
-stem38_dia = f0(3,8) + f0(1,182);
-stem14_dia = f0(1,4) + f0(1,182);
+stem38_dia = f0(3,8) + f0(1,128);
+stem14_dia = f0(1,4) + f0(1,128);
 stem38_height = f0(7,16);
 stem14_height = f0(5,16);
 padding = f0(1,16);
