@@ -13,7 +13,7 @@ function subarray (list, begin = 0, end = -1) = [
 //               19mm     17mm     15mm    14mm    13mm    12mm    11mm    10mm     9mm
 sockets_od = [f0(127), f0(117), f0(109), f0(96), f0(89), f0(87), f0(83), f0(85), f0(85)];
 padding = f0(1,16);
-stem_dia = f0(3,8);
+stem_dia = f0(3,8) + f0(1,128);
 stem_height = f0(1,2);
 plate_thickness = 2.00;
 

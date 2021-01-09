@@ -13,7 +13,7 @@ function subarray (list, begin = 0, end = -1) = [
 //           11/16"     5/8"    9/16"    1/2"   7/16"    3/8"   5/16"    1/4"
 sockets_od = [f1(1), f0(117), f0(106), f0(96), f0(90), f0(90), f0(90), f0(90)];
 padding = f0(1,16);
-stem_dia = f0(49,128);
+stem_dia = f0(3,8) + f0(1,128);
 stem_height = f0(1,2);
 plate_thickness = 2.00;
 
