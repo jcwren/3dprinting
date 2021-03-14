@@ -39,16 +39,16 @@ stems = [
   [ 90, 75, stem_375],
   [115, 75, stem_500],
   [140, 75, stem_375],
-];  
+];
 
 module socket_stem_round (pos, size)
 {
   stem_dia = size [1];
   stem_height = size [2];
-  
+
   translate (pos) {
     cylinder (d = stem_dia, h = stem_height - (stem_dia / 2));
-    
+
     translate ([0, 0, stem_height - (stem_dia / 2)])
       sphere (d = stem_dia);
   }
@@ -72,7 +72,7 @@ module socket_plate ()
   union () {
     plate_x = (plate_wid / 2) - plate_radius;
     plate_y = (plate_len / 2) - plate_radius;
-    
+
     hull ()
       for (x = [-1, 1])
         for (y = [-1, 1])
@@ -80,7 +80,7 @@ module socket_plate ()
             cylinder (h = plate_hgt, r = plate_radius);
 
     translate ([-plate_wid / 2, -plate_len / 2, plate_hgt - 0.02])
-      for (i = [0 : len (stems) - 1]) 
+      for (i = [0 : len (stems) - 1])
         if (stems [i][2][0] == 0)
           socket_stem_round ([stems [i][0], stems [i][1], 0], stems [i][2]);
         else if (stems [i][2][0] == 1)
