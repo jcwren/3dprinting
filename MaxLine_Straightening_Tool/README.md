@@ -9,6 +9,7 @@ wheels in the straightening tool and the form and stop blocks in the bending
 tool are glued together with Gorilla Original Gorilla Glue, which is
 a polyurethane formula that works well with PETG.
 
+# Parts List
 The straightening tool requires the following parts:
 * 14 wheel halves
 * 7 3/8" x 3 1/2" hex bolts
@@ -23,3 +24,8 @@ The bending tool requires the following parts:
 * 2 3/8" x xx hex bolts
 * 4 3/8" washers (SAE is fine, USS is better)
 * 2 3/8" Nylock nuts
+
+# Assembly Instructions
+* Glue all the halves together
+* ?
+* Profit!
