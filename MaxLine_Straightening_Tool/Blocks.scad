@@ -27,7 +27,7 @@ module vertical_chamfer () {
        [block_x, block_y + (hypotenuse (chamfer, chamfer) / 2)],
        [-(hypotenuse (chamfer, chamfer) / 2), block_y]
       ];
-  
+
   for (i = [0:3])
     translate ([x [i][0], x [i][1], -0.01])
       rotate ([0, 0, (i * 90) + 45])
@@ -35,38 +35,26 @@ module vertical_chamfer () {
 }
 
 module horizontal_chamfer (z) {
-  translate ([0, -0.01, z + (hypotenuse (chamfer, chamfer) / 2)])
-    rotate ([270, 0, 0])
-      rotate ([0, 0, 45])
-        cube ([chamfer, chamfer, block_y + 0.02]);
-  translate ([block_x, -0.01, z + (hypotenuse (chamfer, chamfer) / 2)])
-    rotate ([270, 0, 0])
-      rotate ([0, 0, 45])
-        cube ([chamfer, chamfer, block_y + 0.02]);  
-  translate ([block_x + 0.01, -(hypotenuse (chamfer, chamfer) / 2), z])
-    rotate ([0, 270, 0])
-      rotate ([0, 0, 45])
-        cube ([chamfer, chamfer, block_x + 0.02]);  
-  translate ([block_x + 0.01, block_y - (hypotenuse (chamfer, chamfer) / 2), z])
-    rotate ([0, 270, 0])
-      rotate ([0, 0, 45])
-        cube ([chamfer, chamfer, block_x + 0.02]); 
+  x = [[[0, -0.01, z + (hypotenuse (chamfer, chamfer) / 2)], [270, 0, 0], block_y],
+       [[block_x, -0.01, z + (hypotenuse (chamfer, chamfer) / 2)], [270, 0, 0], block_y],
+       [[block_x + 0.01, -(hypotenuse (chamfer, chamfer) / 2), z], [0, 270, 0], block_x],
+       [[block_x + 0.01, block_y - (hypotenuse (chamfer, chamfer) / 2), z], [0, 270, 0], block_x]
+      ];
+
+  for (i = [0:3])
+    translate (x [i][0])
+      rotate (x [i][1])
+        rotate ([0, 0, 45])
+          cube ([chamfer, chamfer, x[i][2] + 0.02]);
 }
 
-module pipe_chamfer (x)
-{
-  *translate ([x, 0, (pipe_od / 2) + lip])
-    rotate ([0, 90, 0])
-      rotate_extrude (convexity = 10)
-        translate ([pipe_od / 2, 0, 0])
-          circle (d = chamfer);
+module chamfer () {
+  vertical_chamfer ();
+  horizontal_chamfer (0);
+  horizontal_chamfer (block_height);
 }
 
 difference () {
   block ();
-  vertical_chamfer ();
-  horizontal_chamfer (0);
-  horizontal_chamfer (block_height);
-  pipe_chamfer (0);
-  pipe_chamfer (block_x);
+  chamfer ();
 }
