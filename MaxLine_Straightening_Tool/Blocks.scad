@@ -1,10 +1,10 @@
-$fn = 180;
+$fn          = 180;     // Number of fragments
 pipe_od      = 25.9;    // OD of MaxLine (1" + 0.02" printing fudge factor)
 lip          =  4.7625; // Extra lip on either side is 3/16"
-block_x      = 30;
-block_y      = 35;
+block_x      = 30;      // Block width
+block_y      = 35;      // Block depth
 axle         =  9.525;  // 3/8" screw for axle
-chamfer      =  2;
+chamfer      =  2;      // Edge chamfer in mm
 
 block_height = pipe_od + (lip * 2);
 
