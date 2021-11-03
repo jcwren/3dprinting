@@ -13,14 +13,15 @@ pin_dia     =   5.0;    // Alignment pin diameter
 pin_height  =   5.0;    // Alignment pin height
 pin_inset   =   5.0;    // Alignment pin inset from edges of holder
 pin_slop    =   0.05;   // Alignment pin slop so things aren't TOO tight
+washer_hgt  =   1.8;    // Thickness of 3/8" SAE washer
 margin      =  10.0;    // Extra space
 render_fix  =   0.01;
 
 module holder (n_len, n_dia, add_ears, y_offset) {
   x = margin + n_len + margin;
   y = margin + n_dia + margin;
-  z = lip + (pipe_od / 2) + (n_dia / 2) + margin;
-  
+  z = washer_hgt + lip + (pipe_od / 2) + (n_dia / 2) + margin;
+
   translate ([0, y_offset, 0]) {
     //
     //  Basic shells
@@ -42,7 +43,7 @@ module holder (n_len, n_dia, add_ears, y_offset) {
       translate ([x - pin_inset, y - pin_inset, (z / 2) - pin_height])
         cylinder (d = pin_dia + pin_slop, h = pin_height + 0.3);
     }
-    
+
     //
     //  Add alignment posts
     //
@@ -50,7 +51,7 @@ module holder (n_len, n_dia, add_ears, y_offset) {
       cylinder (d = pin_dia, h = pin_height);
     translate ([pin_inset, y - pin_inset, z / 2])
       cylinder (d = pin_dia, h = pin_height);
-    
+
     //
     //  Add mounting ears
     //
