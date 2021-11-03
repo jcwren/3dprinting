@@ -20,7 +20,7 @@ render_fix  =   0.01;
 module holder (n_len, n_dia, add_ears, y_offset) {
   x = margin + n_len + margin;
   y = margin + n_dia + margin;
-  z = washer_hgt + lip + (pipe_od / 2) + (n_dia / 2) + margin;
+  z = (washer_hgt * add_ears) + lip + (pipe_od / 2) + (n_dia / 2) + margin;
 
   translate ([0, y_offset, 0]) {
     //
