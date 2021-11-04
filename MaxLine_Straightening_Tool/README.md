@@ -15,7 +15,7 @@ The straightening tool requires the following parts:
 * 7 3/8"-16 x 3 1/2" hex bolts
 * 7 3/8"-16 Nylock nuts
 * 21 3/8" washers (SAE is fine, USS is better)
-* 2 3/4" x 6" x 24" plywood
+* 2 pieces 3/4" x 6" x 24" plywood
 
 The bending tool requires the following parts:
 * 2 form halves (printed)
@@ -27,7 +27,9 @@ The bending tool requires the following parts:
 * 2 3/8"-16 x ?" hex bolts
 * 2 3/8"-16 nuts
 * 2 3/8"-16 Nylock nuts
-* 6 3/8" SAE washers
+* 7 3/8" SAE washers
+* 8 #8 1" sheet metal screws
+* 16 1-1/4" brad nails (optional)
 * 2 T-shaped pieces of 3/4" plywood with the following dimensions:
   * Top of T is 12" wide by 1.5" deep
   * Leg of T is 18" long by 2" wide (18" includes the 1.5" of the T top)
@@ -35,6 +37,7 @@ The bending tool requires the following parts:
 # Required tools
 * Gorilla Original Gorilla Glue (Polyurethane)
 * Three 4" spring clamps (e.g., Home Depot #TP05140)
+* 3/8" drill bit (brad point or Forstner is preferred)
 * Red Loctite Thread Locker Compound (optional)
 
 # Printer Settings (PrusaSlicer)
@@ -68,12 +71,16 @@ The bending tool requires the following parts:
 1. Clamp the halves together
 1. Verify the threaded rod can be easily rotated
 1. Allow glue to dry for at least two hours
+1. Add spacing washers to one side of form head
+## Bending Blocks
+1. Using 3/8" drill bit, run bit through the mounting hole so the 3/8"-16 x ?" bolt moves freely in the block
 ## Plywood Base
-1. Apply thin coat of glue to one side of each plywood T piece
+1. Apply a thin coat of glue to one side of each plywood T piece
 1. Clamp pieces together
-1. If possible, use several 1-1/4" brad nails to join parts (keeps parts from slipping)
+1. If available, use several 1-1/4" brad nails to join parts (keeps parts from slipping)
 1. Allow to dry for 2 hours
-1. Optionally sand both sides of assembled piece smooth and radius edges
-1. Optionally paint plywood or seal plywood with a clear coat of ployurethane
+1. Sand both sides of assembled piece smooth and radius edges (optional)
+1. Paint plywood or seal plywood with a clear coat of ployurethane (optional)
 1. Lightly mark a line down the center of the leg of the T to find center
-1. Lightly mark a line across the center of the top of the T to find center
+1. Make a mark 1" in and 3/4" down on either side of the top of the T
+1. Drill a 3/8" hole at each of the marks in the previous step
