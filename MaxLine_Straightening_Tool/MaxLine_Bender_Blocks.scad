@@ -54,7 +54,12 @@ module chamfer () {
   horizontal_chamfer (block_height);
 }
 
-difference () {
-  block ();
-  chamfer ();
+//
+//  Rotate so block doesn't need to be rotated in slicer
+//
+rotate ([270, 0, 0]) {
+  difference () {
+    block ();
+    chamfer ();
+  }
 }
