@@ -2,7 +2,7 @@ $fn          = 180;     // Number of fragments
 pipe_od      = 25.9;    // OD of MaxLine (1" + 0.02" printing fudge factor)
 lip          =  4.7625; // Extra lip on either side is 3/16"
 block_x      = 30;      // Block width
-block_y      = 35;      // Block depth
+block_y      = 40;      // Block depth
 axle         =  9.525;  // 3/8" screw for axle
 chamfer      =  2;      // Edge chamfer in mm
 
@@ -16,7 +16,7 @@ module block () {
     translate ([-0.01, 0, block_height / 2])
       rotate ([0, 90, 0])
         cylinder (d = pipe_od, h = block_x + (0.01 * 2));
-    translate ([block_x / 2, (block_y - (pipe_od / 2)) + (axle / 2), -0.01])
+    translate ([block_x / 2, (block_y - (pipe_od / 2)), -0.01])
       cylinder (d = axle, h = block_height + (0.01 * 2));
   }
 }
