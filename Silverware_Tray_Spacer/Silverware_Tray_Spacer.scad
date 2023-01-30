@@ -1,11 +1,14 @@
 thick = 6;
+length = 201;
+width = 150;
+bar_spacing = 103;
 
-translate ([-(50 + thick), 0, 0])
-  cube ([thick, 196, thick]);
-translate ([50, 0, 0])
-  cube ([thick, 196, thick]);
-translate ([-75, 0, 0])
-  cube ([150, thick, thick * 2]);
-translate ([-75, 196 - thick, 0])
-  cube ([150, thick, thick * 2]);
+translate ([-((bar_spacing / 2) + thick), 0, 0])
+  cube ([thick, length, thick]);
+translate ([bar_spacing / 2, 0, 0])
+  cube ([thick, length, thick]);
+translate ([-(width / 2), 0, 0])
+  cube ([width, thick, thick]);
+translate ([-(width / 2), length - thick, 0])
+  cube ([width, thick, thick * 2]);
   
