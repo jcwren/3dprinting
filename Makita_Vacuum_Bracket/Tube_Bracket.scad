@@ -7,11 +7,11 @@ screw_off_ttb  =   8.0;
 tube_wall      =   5.0;
 tube_dia       =  32.0;
 tube_hgt       =  10.0;
-spacer_hgt     =  35.0;
+spacer_hgt     =  58.0;
 spacer_dep     =  10.0;
 foot_wid       =  tube_dia;
 foot_len       =  25.0;
-foot_hgt       =   5.0;
+foot_hgt       =  10.0;
 
 module screw (l) {
   cylinder (d = screw_body_dia, h = l + 0.02);
