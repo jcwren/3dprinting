@@ -27,10 +27,10 @@ module frame () {
  }
 
 module single_rail () {
-  translate ([0, -(pipette_neck / 2), 0])  
+  translate ([0, -(pipette_neck / 2), 0])
     cube ([inner_x + wall_thickness + 0.01, pipette_neck, pipette_taper]);
   difference () {
-    translate ([0, -(pipette_flange / 2), 1.5 - 0.01]) 
+    translate ([0, -(pipette_flange / 2), 1.5 - 0.01])
       cube ([inner_x + wall_thickness + 0.01, pipette_flange, pipette_taper * 3]);
     translate ([0, -(pipette_flange / 2), pipette_taper * 4])
       translate ([0, 0, -1.78])
@@ -42,7 +42,7 @@ module single_rail () {
           cube ([wall_thickness, 2.5, 2.5]);
   }
 }
-  
+
 module rails () {
   translate ([-0.01, wall_thickness + (pipette_spacing / 2), -0.01]) {
     for (y = [0 : pipettes_y - 1]) {

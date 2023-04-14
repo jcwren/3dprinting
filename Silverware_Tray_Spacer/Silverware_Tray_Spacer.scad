@@ -11,4 +11,4 @@ translate ([-(width / 2), 0, 0])
   cube ([width, thick, thick]);
 translate ([-(width / 2), length - thick, 0])
   cube ([width, thick, thick * 2]);
-  
+

@@ -33,13 +33,13 @@ clamp_z = 9.3;
 //
 //
 module right_triangle (side1, side2, corner_radius, triangle_height) {
-  translate ([corner_radius, corner_radius, 0]) {  
-    hull () {  
+  translate ([corner_radius, corner_radius, 0]) {
+    hull () {
       %cylinder (r=corner_radius, h=triangle_height, $fn=detail);
       translate ([side1 - corner_radius * 2, 0, 0])
         cylinder(r=corner_radius, h=triangle_height, $fn=detail);
       translate ([0, side2 - corner_radius * 2, 0])
-        cylinder (r=corner_radius, h=triangle_height, $fn=detail);  
+        cylinder (r=corner_radius, h=triangle_height, $fn=detail);
     }
   }
 }
@@ -96,7 +96,7 @@ module trapezoid (b, angle=60, H, height=1, heights=undef, center=undef, centerX
 		polyhedron (
 			points=[pointAB1, pointBC1, pointCD1, pointDA1,
 						  pointAB2, pointBC2, pointCD2, pointDA2],
-			faces=[	
+			faces=[
 				[0, 1, 2],
 				[0, 2, 3],
 				[4, 6, 5],
@@ -110,7 +110,7 @@ module trapezoid (b, angle=60, H, height=1, heights=undef, center=undef, centerX
 				[3, 7, 0],
 				[0, 7, 4]]);
 	} else {
-		if (!validAngle) 
+		if (!validAngle)
       echo ("Trapezoid invalid, angle must be less than 90");
 		else
       echo ("Trapezoid invalid, H is larger than triangle");
@@ -119,7 +119,7 @@ module trapezoid (b, angle=60, H, height=1, heights=undef, center=undef, centerX
 
 module tripod_plate (plate=1) {
   trapezoid (b=clamp_x, angle=60, H=clamp_z, height=clamp_y, centerXYZ=[true,true,true]);
-  
+
   if (plate)
       rotate ([90, 0, 0])
         translate ([-(plate_x/2), -(plate_y/2), -((clamp_z/2) + plate_z)+fudge])
@@ -180,7 +180,7 @@ module parabola_mount () {
         translate ([0, 0, (p_focal/p_correction)+mount_height])
           paraboloid (y=p_height, f=p_focal/p_correction, rfa=0, fc=1, detail=detail);
       }
-      translate ([0, 0, -(9.3/2)])      
+      translate ([0, 0, -(9.3/2)])
         rotate ([90, 0, 0])
           tripod_plate (plate=0);
       translate ([0, 0, fudge])
@@ -218,8 +218,8 @@ module tripod_plate_test () {
       cube ([70, 47, 50]);
   }
 }
- 
-*tripod_plate_test (); 
+
+*tripod_plate_test ();
 
 union () {
   cube ([mount_width, 0.01, 0.01]);

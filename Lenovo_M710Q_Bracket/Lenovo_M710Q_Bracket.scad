@@ -24,7 +24,7 @@ translate ([0, -thickness, 0]) {
   //  Bottom bar
   //
   hole_x_pos = (depth + thickness) + (((depth * 2) - (depth + thickness)) / 2);
-  
+
   difference () {
     cube ([depth * 2, thickness, width]);
     translate ([hole_x_pos, thickness / 2, width / 2])

@@ -37,13 +37,13 @@ module bracket () {
       translate ([(ring_dia / 2) + spacer_dep, -(bracket_wid / 2), 0])
         cube ([bracket_dep, bracket_wid, bracket_hgt]);
     }
-    translate ([((ring_dia / 2) + spacer_dep) - 0.01, 
-                 -((bracket_wid / 2) - screw_off_sts), 
+    translate ([((ring_dia / 2) + spacer_dep) - 0.01,
+                 -((bracket_wid / 2) - screw_off_sts),
                  bracket_hgt - screw_off_ttb])
       rotate ([90, 0, 90])
         screw (bracket_dep);
-    translate ([((ring_dia / 2) + spacer_dep) - 0.01, 
-                 (bracket_wid / 2) - screw_off_sts, 
+    translate ([((ring_dia / 2) + spacer_dep) - 0.01,
+                 (bracket_wid / 2) - screw_off_sts,
                  bracket_hgt - screw_off_ttb])
       rotate ([90, 0, 90])
         screw (bracket_dep);
