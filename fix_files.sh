@@ -20,7 +20,7 @@ fi
 
 echo "Fixing line endings..."
 if ! command -v dos2unix &> /dev/null; then
-  echo "  Can't do it, dos2unux not installed"
+  echo "  Can't do it, dos2unix not installed"
 else
   find . -type f -name \*.scad -exec dos2unix -q {} \;
 fi
