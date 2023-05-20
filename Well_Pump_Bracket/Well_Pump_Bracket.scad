@@ -4,29 +4,29 @@
 //
 
 mtg_hole_x_ctc = 108.000; // No actual boss on the right side, but rests on edge of large ring
-mtg_hole_y_ctc =  98.000; // Distance to boss in upper left corner
+mtg_hole_y_ctc =  97.000; // Distance to boss in upper left corner
 mtg_hole_dia   =   3.500; // Diameter of mounting boss screw hole
 plate_overhang =   5.000; // Plate overhangs mounting bosses by 5mm
-plate_z        =   3.000; // Thickness of plate
-opto_hole_size =   2.759; // 4/40 screw diameter
+plate_z        =   0.400; // Thickness of plate
+opto_hole_size =   2.800; // 4/40 screw diameter
 
-plate_mtg_holes = [[0, 0], [0, 98], [55, 5], [55, 98]];
-opto_mtg_holes  = [[0, 0], [40, 3.6]];
+plate_mtg_holes = [[0, 0], [0, 97], [54, 0 + 5], [54, 97 - 5]];
+opto_mtg_holes  = [[0, 4], [40, 0]];
 clip_locations  = [[0, 0, 0], [0, 24.5, 0]];
 
 module clip (rot = 0) {
-  x = 3;
-  y = 3;
-  total_h = 6;
-  slot_h = 1.6;
+  x = 5;
+  y = 4;
+  total_h = 8;
+  slot_h = 1.8;
   slot_above_z = 4.0;
   
   rotate (rot)
     difference () {
       translate ([0, 0, total_h / 2])
         cube ([x, y, total_h], center = true);
-      translate ([slot_h / 2, -0.01, slot_above_z])
-        cube ([slot_h, y + 0.03, slot_h], center = true);
+      translate ([x / 2, -0.01, slot_above_z + (slot_h / 2)])
+        cube ([x, y + 0.03, slot_h], center = true);
     }
 }
 
@@ -37,15 +37,23 @@ module clips () {
         clip ();
 }
 
-module rj_45 () {
-  rj45_x = 5.0;
+module side_blocks () {
+  translate ([17, 13 - 1.75, plate_z]) {
+    translate ([0, -3, 0])
+      cube ([5, 3, 8]);
+    translate ([0, 28, 0])
+      cube ([5, 3, 8]);
+  }
+}
+
+module rj45 () {
   rj45_y = 18.5;
   rj45_z = 14.5;
   wall = 5;
   height_above_z = 4 + 1.6;
   
   translate ([5, 13, plate_z])
-    translate ([93, 9.75 - wall, 0])
+    translate ([93, 9.75 - 1.75 - wall, 0])
       difference () {
         translate ([0, 0, 0])
           cube ([wall, wall + rj45_y + wall, height_above_z + rj45_z + wall]);
@@ -79,13 +87,21 @@ module place_holes (hole_array, offset_x = 0, offset_y = 0, hole_dia = 1) {
 
 module mtg_holes () {
   place_holes (plate_mtg_holes, 0, 0, mtg_hole_dia);
-  place_holes (opto_mtg_holes, 10, 70, opto_hole_size);
+  place_holes (opto_mtg_holes, 20, 70, opto_hole_size);
 }
 
-difference () {
-  plate ();
-  mtg_holes ();
+module esp32_poe_iso_mount () {
+  clips ();
+  side_blocks ();
+  rj45 ();
 }
 
-clips ();
-rj_45 ();
+module mounting_plate () {
+  difference () {
+    plate ();
+    mtg_holes ();
+  }
+}
+
+mounting_plate ();
+color ("blue") esp32_poe_iso_mount ();
