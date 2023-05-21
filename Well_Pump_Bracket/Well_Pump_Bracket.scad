@@ -1,6 +1,6 @@
 //
 //  Box 0,0 reference is with the box with the long side left to right and
-//  the small diameter mounting boss in the lower left corner. 
+//  the small diameter mounting boss in the lower left corner.
 //
 
 mtg_hole_x_ctc = 97.000; // No actual boss on the right side, but rests on edge of large ring
@@ -20,7 +20,7 @@ module clip (rot = 0) {
   total_h = 9;
   slot_h = 2;
   slot_above_z = 4.0;
-  
+
   rotate (rot)
     difference () {
       translate ([0, 0, total_h / 2])
@@ -50,7 +50,7 @@ module rj45 () {
   rj45_z = 14.5;
   wall = 5;
   height_above_z = 4 + 1.6;
-  
+
   translate ([95, 9.75 - 1.75 - wall, 0])
     difference () {
       translate ([0, 0, 0])
@@ -67,7 +67,7 @@ module plate () {
   x_max = mtg_hole_x_ctc + (plate_overhang - radius);
   y_max = mtg_hole_y_ctc + (plate_overhang - radius);
   corners = [[x_org, y_org, 0], [x_org, y_max, 0], [x_max, y_org, 0], [x_max, y_max, 0]];
-  
+
   linear_extrude (height = plate_z)
     hull ()
       for (i = [0:len (corners) - 1])
