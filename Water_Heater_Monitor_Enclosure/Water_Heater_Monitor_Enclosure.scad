@@ -78,7 +78,7 @@ module plate (mtg_ears = true) {
   }
 }
 
-module cover_posts (z = plate_z, adjust = 0) {
+module cover_posts (adjust = 0) {
   radius = 2;
   x_org = radius - adjust;
   y_org = radius - adjust;
@@ -86,11 +86,10 @@ module cover_posts (z = plate_z, adjust = 0) {
   y_max = plate_y + adjust;
   corners = [[x_org, y_org, 0], [x_org, y_max, 0], [x_max, y_org, 0], [x_max, y_max, 0]];
 
-  translate ([0, 0, z])
-    linear_extrude (height = 4 + 1.6 + 14.5 + 5 + (adjust ? (plate_z + adjust + adjust + adjust) : 0))
-        for (i = [0:len (corners) - 1])
-          translate (corners [i])
-            circle (r = radius + adjust, $fn = 180);
+  linear_extrude (height = plate_z + 4 + 1.6 + 14.5 + 5 + (adjust ? 1 : 0))
+      for (i = [0:len (corners) - 1])
+        translate (corners [i])
+          circle (r = radius + adjust, $fn = 180);
 }
 
 module esp32_poe_iso_mount () {
@@ -103,26 +102,25 @@ module esp32_poe_iso_mount () {
 
 module base_plate () {
   plate ();
-  cover_posts ();
+  cover_posts (0);
   color ("blue")
     esp32_poe_iso_mount ();
 }
 
 module cover () {
   difference () {
-    union ()
-      difference () {
-        translate ([0, 0, 0])
-          hull ()
-            cover_posts (0, 0.75);
-        translate ([0, 0, -0.01])
-          hull ()
-            cover_posts (0, 0);
-      }
-      translate ([8, 5, plate_z])
-        translate ([95, 9.75 - 1.75 - 5, 0])
-          translate ([-0.01, 5, 4 + 1.6])
-            cube ([15 + 0.02, 18.5, 14.5]);
+    difference () {
+      translate ([0, 0, 0])
+        hull ()
+          cover_posts (0.75);
+      translate ([0, 0, -0.01])
+        hull ()
+          cover_posts (0);
+    }
+    translate ([8, 5, plate_z])
+      translate ([95, 9.75 - 1.75 - 5, 0])
+        translate ([-0.01, 5, 4 + 1.6])
+          cube ([15 + 0.02, 18.5, 14.5]);
   }
 }
 
@@ -131,9 +129,9 @@ render_base = true;
 render_cover = true;
 
 if (preview) {
-  color ("blue", 0.3)
+  color ("blue", 0.9)
     base_plate ();
-  color ("gold", 0.4)
+  color ("gold", 0.6)
     cover ();
 } else {
   if (render_base)
