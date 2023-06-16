@@ -87,9 +87,9 @@ module cover_posts (adjust = 0) {
   corners = [[x_org, y_org, 0], [x_org, y_max, 0], [x_max, y_org, 0], [x_max, y_max, 0]];
 
   linear_extrude (height = plate_z + 4 + 1.6 + 14.5 + 5 + (adjust ? 1 : 0))
-      for (i = [0:len (corners) - 1])
-        translate (corners [i])
-          circle (r = radius + adjust, $fn = 180);
+    for (i = [0:len (corners) - 1])
+      translate (corners [i])
+        circle (r = radius + adjust, $fn = 180);
 }
 
 module esp32_poe_iso_mount () {
@@ -136,14 +136,13 @@ if (preview) {
 } else {
   if (render_base)
     base_plate ();
-  if (render_cover) {
+  if (render_cover)
     rotate ([180, 0, 0])
-    translate ([0, render_base ? -100 : 0, -29.35])
-      difference () {
-        translate ([0, 0, 0])
-          cover ();
-        translate ([0, 0, -0.01])
-          plate ();
-      }
-  }
+      translate ([0, render_base ? -100 : 0, -28.1])
+        difference () {
+          translate ([0, 0, 0])
+            cover ();
+          translate ([0, 0, -0.01])
+            plate ();
+        }
 }
