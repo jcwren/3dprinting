@@ -107,6 +107,12 @@ module base_plate () {
     esp32_poe_iso_mount ();
 }
 
+module led_and_jack_holes () {
+  for (i = [0:2])
+    translate ([8 + (i * 12.7), 40.5, 26.5])
+      cylinder (d=6.1, h=3, $fn=180);
+}
+
 module cover () {
   difference () {
     difference () {
@@ -121,11 +127,12 @@ module cover () {
       translate ([95, 9.75 - 1.75 - 5, 0])
         translate ([-0.01, 5, 4 + 1.6])
           cube ([15 + 0.02, 18.5, 14.5]);
+    led_and_jack_holes ();
   }
 }
 
 preview = false;
-render_base = true;
+render_base = false;
 render_cover = true;
 
 if (preview) {
