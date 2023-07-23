@@ -26,8 +26,14 @@ valve_handle_depth    =   8.0;      // Depth of handle cutout
   
 grub_dia              =   3.0;      // Diameter of hole for M3 grub screw
 
-$fn = 128;
+heat_set_m3_dia       =   5.1;      // M3 heat set, 0.4mm less for correct fit
+heat_set_m3_len       =   4.8;      // M3 heat length + 1mm for safety
 
+m3_screw_dia          =   2.9;      // M3 screw diameter minus a little to keep it tight
+m3_screw_len          =  10.0;      // Allow space under heat set for screw
+       
+$fn = 128;
+ 
 coupler_shaft_depth = coupler_width - valve_handle_depth;
 
 //
@@ -70,7 +76,7 @@ module Nema17 (motor_height = motor_length) {
 //
 //  Mounting plate for NEMA-17 stepper motor 
 //
-module motor_mount (plate_xy = 42.30, plate_thickness = 2.0, plate_radius = 2.00) {
+module motor_mount (plate_xy = 42.30, plate_thickness = 3.0, plate_radius = 2.00) {
   difference () {
     union () {
       linear_extrude (plate_thickness) {
@@ -93,7 +99,7 @@ module motor_mount (plate_xy = 42.30, plate_thickness = 2.0, plate_radius = 2.00
     //  Shaft hole
     //
     translate ([0, 0, -0.01])
-      cylinder (d = shaft_base_dia, h = shaft_base_hgt + (0.01 * 2));
+      cylinder (d = shaft_base_dia, h = max (plate_thickness, shaft_base_hgt) + (0.01 * 2));
 
     //
     //  Screw holes for motor. Commented out line is to allow a recess in the
@@ -151,6 +157,34 @@ module coupler () {
       }
 }
 
+module valve () {
+  dia = 16.5;
+  dia_2 = 17.5;
+  cube_w = 13.1;
+  cube_d = 4.0;
+  cube_h = 0.6;
+  
+  rotate ([0, 90, 0]) {
+    translate ([0, 0, 0]) 
+      cylinder (d = dia, h = 37.02, center = true);
+    for (x = [-((21.3 / 2) + 4), 21.3 / 2]) 
+      translate ([0, 0, x])
+        cylinder (d = dia_2, h = 4);
+  }
+
+  translate ([0, (dia / 2) + .5, 0])
+    rotate ([90, 0, 0])
+      cylinder (d = dia, h = 24);
+      
+  for (r = [0, 180]) 
+    rotate ([0, 0, r])
+      translate ([21.3 / 2, -(cube_w / 2), 0])
+        cube ([cube_d, cube_w, (dia / 2) + cube_h]); 
+  rotate ([0, 0, 90])
+    translate ([-(9 + cube_d),  -(cube_w / 2), 0])
+      cube ([cube_d, cube_w, (dia / 2) + cube_h]); 
+}
+
 //
 //  Base plate with valve body and motor mount
 //
@@ -175,12 +209,19 @@ module valve_holder (show_coupler = 0) {
   translate ([0, 0, baseplate_hgt]) {
     difference () {
       cube ([valve_width, block_depth, block_hgt]);
-      translate ([-0.01, valve_backset + (valve_dia_2 / 2), block_hgt])
-        rotate ([0, 90, 0])
-          cylinder (d = valve_dia_2, h = valve_width + 0.02);
-      translate ([valve_width / 2, -0.01, block_hgt])
-        rotate ([270, 00, 0])
-          cylinder (d = valve_dia_1, h = valve_depth + 0.02);
+      translate ([valve_width / 2, 15.25 - 0.01, block_hgt])
+        valve ();
+
+      *translate ([0, 0, (block_hgt - heat_set_m3_len) + 0.01])
+        for (x = [5, valve_width - 5])
+          for (y = [3.2, block_depth - 5])
+            translate ([x, y, 0])
+              cylinder (d = heat_set_m3_dia, heat_set_m3_len);
+      translate ([0, 0, (block_hgt - m3_screw_len) + 0.01])
+        for (x = [5, valve_width - 5])
+          for (y = [3.2, block_depth - 5])
+            translate ([x, y, 0])
+              cylinder (d = m3_screw_dia, m3_screw_len);
     }
     
     translate ([valve_width / 2, -motor_y_pos, block_hgt])
@@ -202,4 +243,5 @@ module valve_holder (show_coupler = 0) {
 }
 
 *coupler ();
-valve_holder (1);
+valve_holder (0);
+*valve ();
