@@ -62,20 +62,26 @@ module cover () {
 }
 
 module base_plate () {
+  plate_points = [
+    [(box_l / 2) + (radius / 2), (box_w / 2) - (radius / 2)],
+    [(box_l / 2) + 12.6, (box_w / 2) - (radius / 2) - 12.6],
+  ];
+
   translate ([0, 0, box_h - (radius / 2)]) {
     difference () {
       hull ()
         linear_extrude (height = baseplate_hgt)
-          for (x = [-12.6, box_l + 12.6])
-            for (y = [radius / 2, box_w - (radius / 2)])
-              translate ([x, y, 0])
-                circle (d = radius);
+          translate ([box_l / 2, box_w / 2, 0])
+            for (i = [0 : len (plate_points) - 1])
+              for (x = [-1, 1])
+                for (y = [-1, 1])
+                  translate ([plate_points [i][0] * x, plate_points [i][1] * y, 0])
+                    circle (d = radius);
 
       translate ([-((12.6 / 2) + (radius / 2)), 0, -0.01])
         for (x = [0, box_l + 12.6 + radius])
-          for (y = [12.6, box_w - 12.6])
-            translate ([x, y, 0])
-              cylinder (d = 4.5, h = (radius / 2) + 0.02);
+          translate ([x, box_w / 2, 0])
+            cylinder (d = 4.5, h = (radius / 2) + 0.02);
     }
 
     //
@@ -86,12 +92,12 @@ module base_plate () {
         translate ([x, y, -10])
           difference () {
             cube ([4, 9, 10]);
-            translate ([-0.01, 4.5, 4])
+            translate ([-0.01, 4.5, 4 - 0.01])
               rotate ([0, 90, 0])
-                cylinder (d = 3, h = (6 - radius) + 0.02);
+                cylinder (d = 3, h = (6 - (radius / 2)) + 0.02);
           }
   }
 }
 
-%cover ();
+*cover ();
 base_plate ();
