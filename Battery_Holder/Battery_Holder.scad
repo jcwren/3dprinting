@@ -11,10 +11,10 @@ $fn = 90;
 //    C  - 25.8mm
 //    D  - 33.5mm
 //
-width     =  4;   // Number of horizontal cups
+width     =  5;   // Number of horizontal cups
 height    =  6;   // Number of vertical cups
-depth     = 15;   // Internal depth of cups (10 for AA/AAA, 15 for C/D)
-diameter  = 25.8; // Diameter of cylinder (see table above)
+depth     = 10;   // Internal depth of cups (10 for AA/AAA, 15 for C/D)
+diameter  = 14.8; // Diameter of cylinder (see table above)
 thickness =  1;   // Thickness of wall
 base      =  1;   // Thickness of cup bases
 
