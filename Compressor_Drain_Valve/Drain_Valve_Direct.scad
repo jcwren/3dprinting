@@ -245,7 +245,7 @@ module valve_retainer_cap () {
 
   difference () {
     cube ([valve_width, block_depth, block_hgt]);
-    translate ([valve_width / 2, 15.25 - 0.01, block_hgt])
+    translate ([valve_width / 2, 14.25 - 0.01, block_hgt])
       rotate ([0, 180, 0])
         valve ();
 
