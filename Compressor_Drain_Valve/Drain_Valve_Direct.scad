@@ -15,7 +15,7 @@ shaft_screw_head_dia  =   6.2;      // Diameter of head for M3 mounting screw (w
 
 motor_shaft_hgt       =  22.5;      // Total height of motor shaft stem
 motor_shaft_len       =  20.0;      // Length of shaft on motor (from datasheet)
-motor_length          =  30.0;      // Length of motor body
+motor_length          =  40.0;      // Length of motor body
 motor_body_xy         =  42.3;      // Size of NEMA 17 motor body
 
 coupler_diameter      =  40.0;      // Overall diameter of coupler
@@ -194,48 +194,57 @@ module valve () {
 //
 //  Base plate with valve body and motor mount
 //
-module valve_holder (show_coupler = 0) {
+module valve_holder (show_coupler = 0, elevate = 0) {
   block_hgt      = motor_body_xy / 2;   // Total height of block
   motor_y_pos    = coupler_clearance + valve_handle_depth + motor_shaft_hgt;
 
-  //
-  //  Base plate
-  //
-  translate ([-((motor_body_xy - valve_width) / 2), -(coupler_clearance + valve_handle_depth + motor_shaft_hgt + motor_length), 0])
-    cube ([motor_body_xy, block_depth + coupler_clearance + valve_handle_depth + motor_shaft_hgt + motor_length, baseplate_hgt]);
+  translate ([0, 0, elevate]) {
+    //
+    //  Base plate
+    //
+    translate ([-((motor_body_xy - valve_width) / 2), -(coupler_clearance + valve_handle_depth + motor_shaft_hgt + motor_length), 0])
+      cube ([motor_body_xy, block_depth + coupler_clearance + valve_handle_depth + motor_shaft_hgt + motor_length, baseplate_hgt]);
 
-  translate ([0, 0, baseplate_hgt]) {
-    difference () {
-      cube ([valve_width, block_depth, block_hgt]);
-      translate ([valve_width / 2, 14.25 - 0.01, block_hgt])
-        valve ();
+    translate ([0, 0, baseplate_hgt]) {
+      difference () {
+        cube ([valve_width, block_depth, block_hgt]);
+        translate ([valve_width / 2, 14.25 - 0.01, block_hgt])
+          valve ();
 
-      *translate ([0, 0, (block_hgt - heat_set_m3_len) + 0.01])
-        for (x = [5, valve_width - 5])
-          for (y = [3.2, block_depth - 5])
-            translate ([x, y, 0])
-              cylinder (d = heat_set_m3_dia, heat_set_m3_len);
-      translate ([0, 0, (block_hgt - m3_screw_len) + 0.01])
-        for (x = [3.5, valve_width - 3.5])
-          for (y = [3.0, block_depth - 3.5])
-            translate ([x, y, 0])
-              cylinder (d = m3_screw_dia_tight, m3_screw_len);
+        translate ([0, 0, (block_hgt - m3_screw_len) + 0.01])
+          for (x = [3.5, valve_width - 3.5])
+            for (y = [3.0, block_depth - 3.5])
+              translate ([x, y, 0])
+                cylinder (d = m3_screw_dia_tight, m3_screw_len);
+      }
+
+      translate ([valve_width / 2, -motor_y_pos, block_hgt])
+        rotate ([270, 0, 0])
+          motor_mount ();
+
+      if (show_coupler) {
+        color (0, 0.5) {
+          translate ([valve_width / 2, -(coupler_width + 1), block_hgt])
+            rotate ([270, 0, 0])
+              coupler ();
+          translate ([valve_width / 2, -motor_y_pos, block_hgt])
+            rotate ([270, 0, 0])
+              Nema17 ();
+          translate ([valve_width / 2, 14.25 - 0.01, block_hgt])
+            valve ();      }
+      }
     }
 
-    translate ([valve_width / 2, -motor_y_pos, block_hgt])
-      rotate ([270, 0, 0])
-        motor_mount ();
+    if (elevate)
+    {
+      translate ([-((motor_body_xy - valve_width) / 2), -(coupler_clearance + valve_handle_depth + motor_shaft_hgt + motor_length), -elevate]) {
+        cube ([motor_body_xy, 10, elevate]);
+        translate ([0, ((block_depth + coupler_clearance + valve_handle_depth + motor_shaft_hgt + motor_length) / 2) - 5, 0])
+          cube ([motor_body_xy, 10, elevate]);
+        translate ([0, (block_depth + coupler_clearance + valve_handle_depth + motor_shaft_hgt + motor_length) - 10, 0])
+          cube ([motor_body_xy, 10, elevate]);
 
-    if (show_coupler) {
-      color (0, 0.5) {
-        translate ([valve_width / 2, -(coupler_width + 1), block_hgt])
-          rotate ([270, 0, 0])
-            coupler ();
-        translate ([valve_width / 2, -motor_y_pos, block_hgt])
-          rotate ([270, 0, 0])
-            Nema17 ();
-        translate ([valve_width / 2, 14.25 - 0.01, block_hgt])
-          valve ();      }
+      }
     }
   }
 }
@@ -261,5 +270,5 @@ module valve_retainer_cap () {
 
 *coupler ();
 *valve_holder (0);
-valve_retainer_cap ();
+*valve_retainer_cap ();
 *valve ();
