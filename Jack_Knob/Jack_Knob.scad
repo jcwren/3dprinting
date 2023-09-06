@@ -1,10 +1,10 @@
 $fn = 90;
 tee_handle_len  = 22.2; //  Length from end to end of tee handle
 tee_handle_dia  =  3.9; //  Diameter of tee handle bar
-tee_clearance   =  3.3; //  Clearance between tee handle and jack base
-tee_depth       =  4.5; //  Depth of recess for tee handle
+tee_clearance   =  3.0; //  Clearance between tee handle and jack base
+tee_depth       =  5.0; //  Depth of recess for tee handle
 stud_dia        =  9.0; //  Diameter of center of tee handler
-stud_depth      =  6.0; //  Depth of recess for tee stud
+stud_depth      =  7.5; //  Depth of recess for tee stud
 base_height     =  9.0; //  Thickness of base portion
 knob_height     =  7.0; //  Thickness of knob portion
 
@@ -50,4 +50,3 @@ translate ([0, 0, 0])
   knob_handle (knob_height);
 translate ([0, 0, knob_height])
   knob_base ();
-
