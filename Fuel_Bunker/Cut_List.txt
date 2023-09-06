@@ -1,0 +1,22 @@
+4x4's
+ (1) Vertical:      ?
+
+2x4's
+ (1) Front:         69.75
+ (1) Left Stringer: 31.75
+ (4) Mid Stingers:  33.75
+
+2x2's
+ (3) Horizontals:     69.00
+ (2) Left & Right:    28.00
+ (2) Back Verticals:  21.00
+ (2) Front Verticals: 22.50
+
+Plywood/OSB (3/4")
+  (1) Deck:  69.75 x 31.75
+  (1) Front: 70.50 x 28.25
+  (1) Back:  69.00 x 24.00
+  (1) Left:  31.75 x 28.25
+  (1) Right: 31.75 x 24.00
+  (1) Cover: 70.50 x 30.50 (not shown in drawing)
+  (1) Mount: 70.50 x  3.00 (not shown in drawing)
