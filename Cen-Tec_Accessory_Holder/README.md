@@ -1,4 +1,4 @@
-# Accessory storage ring for Centec QuickClick connectors and 1.5" to 2.25" adapter
+# Accessory storage ring for Cen-Tec QuickClick connectors and 1.5" to 2.25" adapter
 
 This ring sits on top of the dust separator and allows for the QuickClick tool
 adapters and the 1.5" to 2.25" vacuum adapter to be conveniently stored.
