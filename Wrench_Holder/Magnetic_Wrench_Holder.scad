@@ -5,14 +5,14 @@ $fn = 90;
 //
 
 num_slots     = 7;    // How many wrenchs this print will hold
-width         = 30;   // Width between two peaks
-depth         = 20;   // Depth of holder (where wrench handle sits)
+width         = 20;   // Width between two peaks
+depth         = 30;   // Depth of holder (where wrench handle sits)
 height        = 38;   // Height of holder
 top_radius    = 1.5;  // Radius of top of holder
 bottom_radius = 2;    // Radius of area handle of wrench sits in
-magic         = 2.15; // Needed to make wedge cutout align, somehow tied to top_radius
-magnet_hgt    = 3;    // Height of 12mmx3mm magnet
-magnet_dia    = 12;   // Diameter of 12mmx3mm magnet
+magic         = 2.09; // Needed to make wedge cutout align, somehow tied to top_radius
+magnet_hgt    = 3.0;  // Height of 12mmx3mm magnet
+magnet_dia    = 12.2; // Diameter of 12mmx3mm magnet + fudge for holes always being too small
 
 module holder (x, z, y, top_radius, bottom_radius) {
   rotate ([90, 0, 0])
