@@ -4,7 +4,7 @@ $fn = 90;
 //  Print in red for imperial wrenchs, grey for metric
 //
 
-slot_list     = [8,8,9];  // How many wrenchs this print will hold
+slot_list     = [8,8,9];  // How many wrenches this print will hold
 width         = 20;       // Width between two peaks
 depth         = 30;       // Depth of holder (where wrench handle sits)
 height        = 38;       // Height of holder
@@ -60,6 +60,6 @@ module holder (x, z, y, top_radius, bottom_radius) {
 }
 
 for (sl = [0 : len (slot_list) - 1])
-  for (i = [0 : slot_list [sl]])
+  for (i = [0 : slot_list [sl] - 1])
     translate ([(width / 2) + (width * i), sl * (depth + 2), 0])
       holder (width, depth, height, top_radius, bottom_radius);
