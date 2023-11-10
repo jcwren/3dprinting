@@ -31,12 +31,12 @@ module leg_holder_outline (o = 17) {
       translate ([-(base_xy / 2) + o, -(base_xy / 2) + o, 0])
         difference () {
           offset (r = leg_wall + (leg_thickness / 2)) {
-            square ([leg_xy, 1]);
-            square ([1, leg_xy]);
+            square ([leg_xy - (leg_radius / 2), 1]);
+            square ([1, leg_xy - (leg_radius / 2)]);
           }
           offset (r = leg_thickness / 2) {
-            square ([leg_xy, leg_thickness / 2]);
-            square ([1, leg_xy]);
+            square ([leg_xy - (leg_radius / 2), leg_thickness / 2]);
+            square ([leg_thickness / 2, leg_xy - (leg_radius / 2)]);
           }
           translate ([2.3, 2.3, 0])
             rotate ([0, 0, 45])
@@ -60,5 +60,5 @@ module leg_holder (o = 17) {
 
 translate ([0, 0, -(base_thickness + leg_height + 0.01)]) {
   base ();
-  leg_holder (18);
+  leg_holder (17);
 }
